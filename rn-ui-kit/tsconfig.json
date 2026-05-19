@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": ".",
+    "paths": {
+      "@otaga/shared-utils": ["../shared-utils/dist/index.d.ts"]
+    }
+  },
+  "include": ["."],
+  "exclude": ["dist", "node_modules"]
+}

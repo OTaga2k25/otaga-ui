@@ -1,0 +1,22 @@
+{
+  "name": "@otaga/shared-utils",
+  "version": "1.3.5",
+  "description": "Core utilities and theme management for the Otaga ecosystem.",
+  "keywords": ["react-native", "theme", "utils", "otaga"],
+  "author": "Otaga Team",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "react-native": "*"
+  }
+}

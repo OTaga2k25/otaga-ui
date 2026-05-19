@@ -1,0 +1,33 @@
+{
+  "name": "@otaga/rn-ui-kit",
+  "version": "1.4.4",
+  "description": "Premium, editorial-style UI Kit for React Native and Expo.",
+  "keywords": [
+    "react-native",
+    "expo",
+    "ui-kit",
+    "premium",
+    "animations"
+  ],
+  "author": "Otaga Team",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "react": "*",
+    "react-native": "*",
+    "expo-linear-gradient": "*",
+    "@expo/vector-icons": "*",
+    "expo-symbols": "*"
+  }
+}

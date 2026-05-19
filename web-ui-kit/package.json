@@ -1,0 +1,22 @@
+{
+  "name": "@otaga/web-ui-kit",
+  "version": "1.0.7",
+  "description": "Premium, editorial-style UI Kit for React and Next.js — no react-native required.",
+  "keywords": ["react", "nextjs", "ui-kit", "web", "otaga"],
+  "author": "Otaga Team",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

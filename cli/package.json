@@ -1,0 +1,33 @@
+{
+  "name": "otaga-ui",
+  "version": "1.0.0",
+  "description": "Component generator CLI for Otaga UI",
+  "main": "dist/index.js",
+  "bin": {
+    "otaga-ui": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "dev": "npm run build && node dist/index.js"
+  },
+  "keywords": [
+    "otaga",
+    "cli",
+    "react-native",
+    "components"
+  ],
+  "author": "Otaga Team",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "prompts": "^2.4.2",
+    "picocolors": "^1.0.0",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/prompts": "^2.4.9",
+    "typescript": "^5.3.3"
+  }
+}
