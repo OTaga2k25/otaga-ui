@@ -1,0 +1,39 @@
+{
+  "name": "@otaga/three-effects",
+  "version": "1.0.0",
+  "description": "Three.js 3D effects and model components for web and plain HTML",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "dev": "vite build"
+  },
+  "keywords": ["three", "threejs", "3d", "effects", "react", "otaga"],
+  "author": "Otaga Team",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true },
+    "react-dom": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/three": "^0.160.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.0",
+    "vite-plugin-dts": "^3.6.0",
+    "@vitejs/plugin-react": "^4.2.0"
+  }
+}

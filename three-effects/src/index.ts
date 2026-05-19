@@ -1,0 +1,31 @@
+// Vanilla (works in plain HTML and any framework)
+export { FloatingCard } from './effects/FloatingCard';
+export type { FloatingCardOptions } from './effects/FloatingCard';
+
+export { GlowCard } from './effects/GlowCard';
+export type { GlowCardOptions } from './effects/GlowCard';
+
+export { ParticleBackground } from './effects/ParticleBackground';
+export type { ParticleBackgroundOptions } from './effects/ParticleBackground';
+
+export { RippleEffect } from './effects/RippleEffect';
+export type { RippleEffectOptions } from './effects/RippleEffect';
+
+export { MorphText } from './effects/MorphText';
+export type { MorphTextOptions } from './effects/MorphText';
+
+// React components
+export { FloatingCard as FloatingCardReact } from './react/FloatingCard';
+export type { FloatingCardProps } from './react/FloatingCard';
+
+export { GlowCard as GlowCardReact } from './react/GlowCard';
+export type { GlowCardProps } from './react/GlowCard';
+
+export { ParticleBackground as ParticleBackgroundReact } from './react/ParticleBackground';
+export type { ParticleBackgroundProps } from './react/ParticleBackground';
+
+export { RippleEffect as RippleEffectReact } from './react/RippleEffect';
+export type { RippleEffectProps, RippleEffectHandle } from './react/RippleEffect';
+
+export { MorphText as MorphTextReact } from './react/MorphText';
+export type { MorphTextProps, MorphTextHandle } from './react/MorphText';
