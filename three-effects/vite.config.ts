@@ -1,3 +1,4 @@
+// ESM build — includes React wrappers, React is external (peer dep)
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
@@ -7,19 +8,11 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'OtagaEffects',
-      formats: ['es', 'umd'],
-      fileName: (format) => format === 'es' ? 'index.js' : 'index.umd.js',
+      formats: ['es'],
+      fileName: () => 'index.js',
     },
     rollupOptions: {
       external: ['react', 'react/jsx-runtime', 'react-dom'],
-      output: {
-        globals: {
-          react: 'React',
-          'react/jsx-runtime': 'ReactJSXRuntime',
-          'react-dom': 'ReactDOM',
-        },
-      },
     },
   },
 });
