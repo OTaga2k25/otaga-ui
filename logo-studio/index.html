@@ -446,6 +446,7 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
           <div class="field"><label for="prLight">Light height</label><output id="prLightOut"></output><input type="range" id="prLight" min="8" max="40" step="0.5" value="24"></div>
         </div>
         <div class="row2">
+          <div class="field"><label for="prMin">Strength · thinnest part</label><output id="prMinOut"></output><input type="range" id="prMin" min="0.6" max="2.4" step="0.1" value="1.2"></div>
           <div class="field"><label for="prWall">Wall</label><output id="prWallOut"></output><input type="range" id="prWall" min="0.8" max="2.2" step="0.1" value="1.2"></div>
         </div>
         <span class="note"><b>Swap, don't reprint.</b> Print one <b>light base</b> (Export → Light base) and keep it. For each client print only this logo part and drop it onto the base: shadow rings and projector shells for the same base size all fit, so you can switch designs in seconds. The light height must match your tea light, so keep using the same model of LED.</span>
@@ -477,6 +478,7 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
           <div><label for="slBase" class="lbl">Fits light base</label>
             <select class="text" id="slBase"><option value="std">Standard base · 84 mm ring · 38 mm tea light</option><option value="small">Small base · 50 mm ring · 38 mm tea light</option><option value="mini">Mini base · 34 mm ring · 21 mm LED</option></select></div>
           <div class="field" hidden><label for="slSmooth">Smooth outline</label><output id="slSmoothOut"></output><input type="range" id="slSmooth" min="0" max="12" step="1" value="3"></div>
+          <div class="field"><label for="slMin">Strength · thinnest part</label><output id="slMinOut"></output><input type="range" id="slMin" min="0.6" max="2.4" step="0.1" value="1.2"></div>
           <div class="field"><label for="slWall">Wall</label><output id="slWallOut"></output><input type="range" id="slWall" min="1.2" max="2.2" step="0.1" value="1.6"></div>
         </div>
         <span class="note"><b>Swap, don't reprint.</b> Print one <b>light base</b> (Export → Light base) and keep it. For each client print only this logo part and drop it onto the base: shadow rings and projector shells for the same base size all fit, so you can switch designs in seconds. The light height must match your tea light, so keep using the same model of LED.</span>
@@ -663,7 +665,7 @@ const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const S = {
-  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, lampBase:'std', slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
+  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
   mode:'raised', logoW:52, angle:0, ly:44, both:false,
   depth:1.6, thr:0.5, invert:false, heightSrc:'layered', reliefColor:'full', smooth:2, hiDetail:false, logoColor:'#1d2c7a', removeBg:true, stickerW:0, nColors:5, text:'', textFont:"800|'Baloo 2'", textPos:'below', textSize:27, textColor:'#12939a'
 };
@@ -1058,6 +1060,30 @@ function softMask(M, rad){
   }
   return (M._soft[rad] = {w, h, m: a});
 }
+function thickenField(F, Na, ys, cw, minW){
+  // make the printed lamp strong: solid parts narrower than minW (around) are widened, solid slivers
+  // shorter than 0.8 mm (up) are made 0.8 mm tall, and slivers under 0.36 mm (one or two layers) are removed
+  const NN = ys.length, solid = q => F[q] >= 0.5, minH = 0.8, dropH = 0.36, wc = Math.max(1, Math.ceil(minW / cw));
+  for (let j = 2; j < NN; j++){
+    let start = -1; const runs = [];
+    for (let k = 0; k <= Na; k++){ const q = (k % Na) * NN + j, sv = k < Na && solid(q); if (sv && start < 0) start = k; if (!sv && start >= 0){ runs.push([start, k - 1]); start = -1; } }
+    if (runs.length === 1 && runs[0][1] - runs[0][0] + 1 >= Na) continue;
+    runs.forEach(([a, b]) => { const n = b - a + 1; if (n >= wc) return; const add = Math.ceil((wc - n) / 2); for (let k = a - add; k <= b + add; k++) F[((k % Na) + Na) % Na * NN + j] = 1; });
+  }
+  for (let i = 0; i < Na; i++){
+    const o = i * NN; let j = 1;
+    while (j < NN){
+      if (!solid(o + j)){ j++; continue; }
+      let b = j; while (b + 1 < NN && solid(o + b + 1)) b++;
+      const lo = ys[Math.max(0, j - 1)], hi = ys[Math.min(NN - 1, b + 1)], h = (hi - lo) / 2;
+      if (b < NN - 1 && j > 1){
+        if (h < dropH) for (let k = j; k <= b; k++) F[o + k] = Math.min(F[o + k], 0.2);
+        else if (h < minH){ let a2 = j, b2 = b; while ((ys[Math.min(NN - 1, b2 + 1)] - ys[Math.max(0, a2 - 1)]) / 2 < minH && (a2 > 2 || b2 < NN - 2)){ if (b2 < NN - 2) b2++; if (a2 > 2) a2--; } for (let k = a2; k <= b2; k++) F[o + k] = 1; }
+      }
+      j = b + 1;
+    }
+  }
+}
 function fieldFix(F, Na, NN, bw, minCells){
   // printability clean-up on the solid/open pattern, then write the changes back into the smooth field
   const B = new Uint8Array(F.length); for (let q = 0; q < F.length; q++) B[q] = F[q] >= 0.5 ? 1 : 0;
@@ -1197,8 +1223,8 @@ function slCompute(){
   if (dome){
     // posts hold the top band up; put them where the logo wall below is already solid so their shadow starts outside the logo
     const cw = 2 * Math.PI * ro / Na, hw = Math.max(2, Math.ceil(0.9 / cw)), jt = Math.max(2, jTop - 1);
-    for (let k = 0; k < 4; k++){
-      const it = Math.round((k / 4 + 1 / 8) * Na) % Na; let best = it;
+    for (let k = 0; k < 8; k++){
+      const it = Math.round((k / 8 + 1 / 16) * Na) % Na; let best = it;
       for (let d = 0; d < Na / 12; d++){ const c1 = (it + d) % Na, c2 = (it - d + Na) % Na; if (F[c1 * NN + jt] >= 0.5){ best = c1; break; } if (F[c2 * NN + jt] >= 0.5){ best = c2; break; } }
       for (let dd = -hw; dd <= hw; dd++){ const i = ((best + dd) % Na + Na) % Na; for (let j = jt; j < NN; j++) F[i * NN + j] = 1; }
     }
@@ -1207,7 +1233,8 @@ function slCompute(){
     const cw = 2 * Math.PI * ro / Na, w = 0.45;
     for (let i = 0; i < Na; i++){ const a = i / Na * S.slRays, d = Math.abs(a - Math.floor(a) - 0.5) * Na / S.slRays * cw; if (d < w * 1.5){ const k = Math.max(0, Math.min(1, (d - w) / (w) + 0.5)); for (let j = 2; j <= jTop; j++) F[i * NN + j] = Math.min(F[i * NN + j], k); } }
   }
-  const bars = fieldFix(F, Na, NN, Math.max(3, Math.round(1.0 / (2 * Math.PI * ro / Na))), 10);
+  thickenField(F, Na, ys, 2 * Math.PI * ro / Na, S.minFeat);
+  const bars = fieldFix(F, Na, NN, Math.max(3, Math.round(1.6 / (2 * Math.PI * ro / Na))), 10);
   slData = {Na, NN, ys, F, e, ro, ri, rm, hMin, yTop, Rfar, Rat, bars, dome, y0, Hr, DT, drop, needDrop, dropShort};
   return slData;
 }
@@ -1308,7 +1335,8 @@ function prCompute(){
       F[i * NN + j] = v;
     }
   }
-  const autoBars = fieldFix(F, Na, NN, Math.max(3, Math.round(1.0 / (2 * Math.PI * pf.rb / Na))), 20);
+  thickenField(F, Na, ys, 2 * Math.PI * pf.rb / Na, S.minFeat);
+  const autoBars = fieldFix(F, Na, NN, Math.max(3, Math.round(1.6 / (2 * Math.PI * pf.rb / Na))), 20);
   prData = {Na, Nh, NN, ys, F, pf, e, Pc, autoBars};
   return prData;
 }
@@ -2589,6 +2617,7 @@ $('slantOut').textContent = 'Flat';
 bindRange('prDist', 'prDist', v => Math.round(v / 10) + ' cm'); bindRange('prSize', 'prSize', v => Math.round(v / 10) + ' cm'); bindRange('prLift', 'prLift', v => (v >= 0 ? '+' : '') + Math.round(v / 10) + ' cm');
 bindRange('prWidth', 'prWidth', v => v + ' mm'); bindRange('bhHole', 'bhHole', v => v + ' mm'); bindRange('bhCollar', 'bhCollar', v => v ? v + ' mm' : 'None');  bindRange('bhCord', 'bhCord', v => v + ' mm'); bindRange('prBars', 'prBars', v => v ? v + '' : 'None'); bindRange('prH', 'prH', v => v + ' mm'); bindRange('prLed', 'prLed', v => v + ' mm'); bindRange('prLight', 'prLight', v => v + ' mm'); bindRange('prWall', 'prWall', v => v.toFixed(1) + ' mm');
 bindRange('slSize', 'slSize', v => Math.round(v / 10) + ' cm'); bindRange('slRays', 'slRays', v => v ? v + '' : 'None'); bindRange('slLed', 'slLed', v => v + ' mm');
+['slMin', 'prMin'].forEach(id => { $(id).addEventListener('input', e => { S.minFeat = parseFloat(e.target.value); ['slMin', 'prMin'].forEach(k => { $(k).value = S.minFeat; $(k + 'Out').textContent = S.minFeat.toFixed(1) + ' mm'; }); rebuild(); }); $(id + 'Out').textContent = '1.2 mm'; });
 bindRange('slLight', 'slLight', v => v + ' mm'); bindRange('slSmooth', 'slSmooth', v => v ? v + '' : 'Off'); bindRange('slWall', 'slWall', v => v.toFixed(1) + ' mm'); bindRange('slRing', 'slRing', v => v + ' mm'); bindRange('slDrop', 'slDrop', v => v + ' mm');
 bindRange('pbHole', 'pbHole', v => v + ' mm'); bindRange('pbDepth', 'pbDepth', v => v + ' mm'); bindRange('mnDepth', 'mnDepth', v => v + ' mm'); bindRange('mnNeck', 'mnNeck', v => v + ' mm');
 bindRange('tbBase', 'tbBase', v => v + ' mm'); bindRange('tbStep', 'tbStep', v => v ? v + ' mm' : 'All the same');
