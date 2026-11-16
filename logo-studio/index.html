@@ -383,6 +383,7 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
           <button id="prodShadow" aria-pressed="false">Shadow lamp<small>Your logo as a shadow</small></button>
           <button id="prodProj" aria-pressed="false">Projector lamp<small>Projects your picture on a wall</small></button>
           <button id="prodBulb" aria-pressed="false">Lamp base<small>Holds a bulb socket</small></button>
+          <button id="prodWall" aria-pressed="false">Wall shadow lamp<small>Hangs on a wall, casts a big shadow</small></button>
         </div>
         <div class="presets" id="presets" role="group" aria-label="Shape"></div>
       </div>
@@ -580,6 +581,30 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
         </div>
         <span class="note">Fluted ribs use Texture depth and Columns. The front panel stays flat for the logo.</span>
       </div>
+      <div class="sub" id="wallOpts" hidden>
+        <div><span class="lbl">Shadow picture</span>
+          <div class="row2" style="align-items:center">
+            <label class="btn" style="text-align:center">Upload shadow picture<input type="file" id="wlPic" accept="image/*" hidden></label>
+            <button class="btn" id="wlPicClear" type="button">Use the main logo</button>
+          </div>
+          <span class="note" id="wlPicNote">Using the main logo. A bold silhouette (mascot, animal, logo mark) casts the best shadow; dark/coloured = shadow, white = light.</span></div>
+        <div class="row2">
+          <div class="field"><label for="wlSize">Shadow size on the wall</label><output id="wlSizeOut"></output><input type="range" id="wlSize" min="300" max="1000" step="10" value="600"></div>
+          <div class="field"><label for="wlLed">LED height above the tray floor</label><output id="wlLedOut"></output><input type="range" id="wlLed" min="35" max="90" step="1" value="60"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="wlW">Tray width</label><output id="wlWOut"></output><input type="range" id="wlW" min="100" max="220" step="2" value="150"></div>
+          <div class="field"><label for="wlD">Tray height</label><output id="wlDOut"></output><input type="range" id="wlD" min="80" max="200" step="2" value="120"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="wlWall">Wall</label><output id="wlWallOut"></output><input type="range" id="wlWall" min="1.6" max="2.6" step="0.1" value="2"></div>
+          <div><label for="wlPower" class="lbl">Power (back plate)</label>
+            <select class="text" id="wlPower"><option value="usb">2×AA batteries + USB-C socket</option><option value="batt">2×AA batteries only</option></select></div>
+        </div>
+        <label class="check"><input type="checkbox" id="wlFront" checked> <span>Raised logo on the tray floor (the front people see)</span></label>
+        <span class="note"><b>Three parts.</b> The <b>shadow tray</b> (walls + floor logo) is printed for each client. The <b>back plate</b> (batteries, switch, keyhole for a wall screw) and the <b>LED post</b> are the same for every tray of this size, so print them once: Export → Wall lamp parts. The tray screws onto the back plate with 4 × M3 screws.</span>
+        <span class="note">Shown lying flat: the floor plane is your wall. Buy a 5 mm warm-white LED with resistor (or a 3 V LED module), a 2×AA holder with switch, and optionally a USB-C 5 V breakout + diode. One small bright LED gives the sharpest shadow.</span>
+      </div>
       <div class="sub" id="bulbOpts" hidden>
         <div><label for="bhSocket" class="lbl">Socket you will fit</label>
           <select class="text" id="bhSocket">
@@ -632,6 +657,12 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
         <button class="btn ghost" id="dlStlSet">Download STL colour set (.zip)<small>One STL per filament colour · load all together, pick a filament for each part · works in Cura too</small></button>
         <button class="btn ghost" id="dlStl">Download STL · single colour<small>One solid mesh in mm · any slicer</small></button>
       </div>
+      <div class="grp" id="wallExport" hidden>
+        <h3>Wall lamp parts (print once)</h3>
+        <button class="btn primary" id="dlWallBack">Download back plate STL<small>Battery pocket, keyhole for a wall screw, M3 holes · fits every tray of this size</small></button>
+        <button class="btn primary" id="dlWallPost">Download LED post STL<small>Holds a 5 mm LED at the height the shadow is worked out for</small></button>
+        <span class="note">The STL / 3MF downloads above contain only this client's shadow tray (with the floor logo in its own colour in the 3MF).</span>
+      </div>
       <div class="grp" id="baseExport" hidden>
         <h3>Light base (print once)</h3>
         <button class="btn primary" id="dlDomeTop" hidden>Download dome top STL<small>Holds the socket or LED · fits every shadow ring of this size · printed upside down</small></button>
@@ -665,7 +696,7 @@ const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const S = {
-  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
+  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
   mode:'raised', logoW:52, angle:0, ly:44, both:false,
   depth:1.6, thr:0.5, invert:false, heightSrc:'layered', reliefColor:'full', smooth:2, hiDetail:false, logoColor:'#1d2c7a', removeBg:true, stickerW:0, nColors:5, text:'', textFont:"800|'Baloo 2'", textPos:'below', textSize:27, textColor:'#12939a'
 };
@@ -687,7 +718,8 @@ const camera = new THREE.PerspectiveCamera(32, 1, 1, 4000);
 const controls = new THREE.OrbitControls(camera, canvas);
 controls.enableDamping = true; controls.minDistance = 120; controls.maxDistance = 700;
 controls.autoRotate = !reduced; controls.autoRotateSpeed = 1.2;
-function resetView(){ if (typeof S !== 'undefined' && S.product === 'proj'){ const d = S.prDist, h = S.prLight + S.prLift; camera.position.set(-d * 0.55 - 120, h + d * 0.35 + 80, -d * 0.75 - 160); controls.target.set(0, h * 0.6, d * 0.55); controls.update(); return; }
+function resetView(){ if (typeof S !== 'undefined' && S.product === 'wall'){ const d = (wlData ? wlData.Rfar : 300) * 2.1; camera.position.set(0, d, d * 0.55); controls.target.set(0, 0, 0); controls.update(); return; }
+  if (typeof S !== 'undefined' && S.product === 'proj'){ const d = S.prDist, h = S.prLight + S.prLift; camera.position.set(-d * 0.55 - 120, h + d * 0.35 + 80, -d * 0.75 - 160); controls.target.set(0, h * 0.6, d * 0.55); controls.update(); return; }
   if (typeof S !== 'undefined' && S.product === 'shadow'){ const r = slData ? Math.min(slData.Rfar, 600) : 200; camera.position.set(0, r * 1.9 + 60, r * 1.5 + 60); controls.target.set(0, 0, 0); controls.update(); return; } camera.position.set(60, 70, 300); controls.target.set(0, 0, 0); controls.update(); }
 resetView();
 $('spin').checked = controls.autoRotate;
@@ -806,6 +838,150 @@ function bodyGeometry(){
   return g;
 }
 
+// ---------- wall shadow lamp ----------
+// Modelled lying on the wall (y = 0 is the wall). Back plate (stock) 0..WL.bp, tray floor on top of it, walls
+// rise out from the wall, and an LED on a post shines back at the wall. The walls are traced like the shadow lamp,
+// but around a rounded rectangle.
+const WL = {bp: 19, fl: 2.4, rc: 10, relief: 1.2};
+let wlData = null, wlPicCanvas = null, wlMaskCache = null, wlPlane = null, wlGlow = null;
+function wlMask(){
+  const src = wlPicCanvas || logoBase || logoProc; if (!src) return null;
+  if (wlMaskCache && wlMaskCache.src === src) return wlMaskCache;
+  const k = Math.min(1, 640 / Math.max(src.width, src.height)), w = Math.max(2, Math.round(src.width * k)), h = Math.max(2, Math.round(src.height * k));
+  const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d'); g.drawImage(src, 0, 0, w, h);
+  const d = g.getImageData(0, 0, w, h).data, m = new Uint8Array(w * h); let sx = 0, sy = 0, n = 0;
+  for (let q = 0; q < m.length; q++){
+    const r = d[q*4], gg = d[q*4+1], bb = d[q*4+2], mx = Math.max(r, gg, bb), mn = Math.min(r, gg, bb), luma = 0.299 * r + 0.587 * gg + 0.114 * bb;
+    if (d[q*4+3] > 110 && (luma < 185 || (mx - mn) > 70)){ m[q] = 1; sx += q % w; sy += (q / w) | 0; n++; }
+  }
+  wlMaskCache = {src, w, h, m, cx: n ? sx / n / w : 0.5, cy: n ? sy / n / h : 0.5};
+  return wlMaskCache;
+}
+function rrDist(a, b, rc, th){
+  // distance from the centre to a rounded rectangle (half sizes a, b) along direction th, in the x-z plane
+  const dx = Math.cos(th), dz = Math.sin(th), sd = t => { const qx = Math.abs(dx * t) - (a - rc), qz = Math.abs(dz * t) - (b - rc); return Math.hypot(Math.max(qx, 0), Math.max(qz, 0)) + Math.min(Math.max(qx, qz), 0) - rc; };
+  let lo = 0, hi = a + b; for (let k = 0; k < 34; k++){ const m = (lo + hi) / 2; if (sd(m) < 0) lo = m; else hi = m; } return (lo + hi) / 2;
+}
+function wlDims(){ const a = S.wlW / 2, b = S.wlD / 2, t = S.wlWall; return {a, b, t, rc: Math.min(WL.rc, a - 2, b - 2)}; }
+function wlCompute(){
+  const M = wlMask(); if (!M) return null;
+  const {a, b, t, rc} = wlDims(), e = WL.bp + WL.fl + S.wlLed, y0 = WL.bp, hMin = WL.bp + WL.fl + 1.8, hMax = e - 4;
+  const Na = Math.max(480, Math.round(2 * (S.wlW + S.wlD) / 0.35));
+  const rO = new Float32Array(Na), rM = new Float32Array(Na);
+  for (let i = 0; i < Na; i++){ const th = i / Na * Math.PI * 2; rO[i] = rrDist(a, b, rc, th); rM[i] = rrDist(a - t / 2, b - t / 2, Math.max(0.5, rc - t / 2), th); }
+  let rmMin = Infinity, rmSum = 0; rM.forEach(v => { rmMin = Math.min(rmMin, v); rmSum += v; }); const rmMed = rmSum / Na;
+  const scale = S.wlSize / Math.max(M.w, M.h), cx = M.cx * M.w, cy = M.cy * M.h, SM = softMask(M, 1);
+  const cover = (R, th) => bilinMask(SM, cx + Math.cos(th) * R / scale, cy + Math.sin(th) * R / scale);
+  let Rfar = 0; for (let q = 0; q < M.m.length; q++) if (M.m[q]) Rfar = Math.max(Rfar, Math.hypot(q % M.w + 0.5 - cx, ((q / M.w) | 0) + 0.5 - cy));
+  Rfar = Rfar * scale + 2;
+  const yTop = Math.min(hMax, e * (1 - rmMin / Math.max(Rfar, rmMin + 1)));
+  const ys = [y0, hMin], dR = Math.max(1, S.wlSize / 260), yAt = R => e * (1 - rmMed / R);
+  for (let R = rmMed * e / (e - hMin) + dR; ; R += dR){ const y = yAt(R); if (y >= yTop){ if (yTop - ys[ys.length - 1] > 0.03) ys.push(yTop); else ys[ys.length - 1] = yTop; break; } if (y - ys[ys.length - 1] >= 0.06) ys.push(y); if (ys.length > 900) break; }
+  const NN = ys.length, F = new Float32Array(Na * NN);
+  for (let i = 0; i < Na; i++){
+    const th = i / Na * Math.PI * 2;
+    for (let j = 0; j < NN; j++) F[i * NN + j] = j <= 1 ? 1 : cover(rM[i] * e / (e - ys[j]), th);
+  }
+  const cw = 2 * (S.wlW + S.wlD) / Na;
+  thickenField(F, Na, ys, cw, S.minFeat);
+  const bars = fieldFix(F, Na, NN, Math.max(3, Math.round(1.6 / cw)), 10);
+  wlData = {Na, NN, ys, F, e, rO, rM, hMin, yTop, Rfar, bars, a, b, t, rc};
+  return wlData;
+}
+function wlRadius(arr, th){ const D = wlData, u = (th / (Math.PI * 2) * D.Na % D.Na + D.Na) % D.Na, i0 = Math.floor(u), f = u - i0; return arr[i0] * (1 - f) + arr[(i0 + 1) % D.Na] * f; }
+function wallGeometries(){
+  const D = wlCompute(); if (!D) return [];
+  const place = (th, r, y) => [Math.cos(th) * r, y, Math.sin(th) * r];
+  const outR = (y, th) => rrDist(D.a, D.b, D.rc, th), inR = (y, th) => rrDist(D.a - D.t, D.b - D.t, Math.max(0.5, D.rc - D.t), th);
+  const walls = smoothShell(D.F, D.Na, D.ys, outR, D.t, place, inR);
+  // floor with a hole for the LED post peg and 4 screw holes
+  const fl = extrudeAt(wlFloorShape(D.a, D.b, D.rc), WL.bp, WL.fl);
+  const parts = [['Shadow tray walls', walls], ['Tray floor', fl]];
+  if (S.wlFront){ const r = wlRelief(D); if (r) parts.push(['Logo (floor)', r]); }
+  parts.forEach(([, g]) => g.translate(0, -WL.bp, 0));   // the tray's own bottom is y = 0 (on the print bed); it is shown sitting on the back plate
+  return parts;
+}
+function rrShape(a, b, rc, notch){
+  // notch = [x0, x1, depth]: a slot cut in from the bottom edge (shape y = -b)
+  const sh = new THREE.Shape(), n = 12; let first = true;
+  [[a - rc, -(b - rc), -Math.PI / 2], [a - rc, b - rc, 0], [-(a - rc), b - rc, Math.PI / 2], [-(a - rc), -(b - rc), Math.PI]].forEach(([cx, cy, a0]) => {
+    for (let k = 0; k <= n; k++){ const an = a0 + k / n * Math.PI / 2, x = cx + Math.cos(an) * rc, y = cy + Math.sin(an) * rc; if (first){ sh.moveTo(x, y); first = false; } else sh.lineTo(x, y); }
+  });
+  if (notch){ const [x0, x1, dp] = notch; sh.lineTo(x0, -b); sh.lineTo(x0, -b + dp); sh.lineTo(x1, -b + dp); sh.lineTo(x1, -b); }
+  sh.closePath(); return sh;
+}
+const circ = (x, y, r) => { const p = new THREE.Path(); p.absarc(x, y, r, 0, Math.PI * 2, true); return p; };
+const rectHole = (x0, y0, x1, y1) => { const p = new THREE.Path(); p.moveTo(x0, y0); p.lineTo(x0, y1); p.lineTo(x1, y1); p.lineTo(x1, y0); p.closePath(); return p; };
+function wlScrewXY(a, b){ return [[a - 8, b - 8], [-(a - 8), b - 8], [a - 8, -(b - 8)], [-(a - 8), -(b - 8)]]; }
+function wlFloorShape(a, b, rc){
+  const sh = rrShape(a, b, rc); sh.holes.push(circ(0, 0, 3.3)); wlScrewXY(a, b).forEach(([x, y]) => sh.holes.push(circ(x, y, 1.7))); return sh;
+}
+function wlRelief(D){
+  // the main logo, raised on the tray floor (marching squares over a flat grid)
+  const M = slMask(); if (!M) return null;
+  const SM = softMask(M, 1), W = 2 * (D.a - D.t - 6), H = 2 * (D.b - D.t - 6), k = Math.min(W / M.w, H / M.h), lw = M.w * k, lh = M.h * k;
+  const cell = 0.3, Nx = Math.round(W / cell) + 4, Nz = Math.round(H / cell) + 1, zs = Array.from({length: Nz}, (_, j) => -H / 2 + j / (Nz - 1) * H);
+  const xOf = i => -W / 2 + (i - 2) * cell, F = new Float32Array(Nx * Nz);
+  for (let i = 0; i < Nx; i++) for (let j = 0; j < Nz; j++){
+    const x = xOf(i), z = zs[j]; if (i < 2 || i > Nx - 3 || Math.hypot(x, z) < 9 || wlScrewXY(D.a, D.b).some(([sx, sy]) => Math.hypot(x - sx, z + sy) < 5)) continue;
+    const u = (x + lw / 2) / k, v = (z + lh / 2) / k; F[i * Nz + j] = bilinMask(SM, u, v);
+  }
+  const ytop = WL.bp + WL.fl, place = (th, r, y) => [xOf(th / (Math.PI * 2) * Nx), r, y];
+  return smoothShell(F, Nx, zs, () => ytop + WL.relief, WL.relief, place, () => ytop - 0.2);
+}
+function wlBackGeometry(){
+  // stock back plate: keyhole + battery pocket from the wall side, USB-C slot, wire channel, M3 pilot holes
+  const {a, b, rc} = wlDims(), usb = S.wlPower === 'usb', kz = b - 24, bz = Math.max(b / 3, 21), layers = [], nd = Math.min(16, b - (bz + 17.5) - 2);
+  const pocket = () => rectHole(-30.5, -(bz - 17.5), 30.5, -(bz + 17.5));
+  const key = (wide) => { const p = new THREE.Path(); const w = wide / 2; p.moveTo(-w, kz); p.lineTo(-w, kz - 11); p.absarc(0, kz - 11, w, Math.PI, 0, true); p.lineTo(w, kz); p.absarc(0, kz, 5.2, 0, Math.PI, true); p.closePath(); return p; };
+  const keyPts = wide => {
+    // one closed outline: round head (r 5.2) at kz + a slot of this width up to kz + 11 with a round end
+    const R = 5.2, w = wide / 2, top = kz + 11, pts = [];
+    for (let k = 0; k <= 16; k++){ const an = k / 16 * Math.PI; pts.push([Math.cos(an) * w, top + Math.sin(an) * w]); }      // top end, right -> left
+    if (w >= R - 0.01){ for (let k = 0; k <= 16; k++){ const an = Math.PI + k / 16 * Math.PI; pts.push([Math.cos(an) * w, kz + Math.sin(an) * w]); } }
+    else { const a0 = Math.asin(w / R); for (let k = 0; k <= 40; k++){ const an = Math.PI / 2 + a0 + k / 40 * (2 * Math.PI - 2 * a0); pts.push([Math.cos(an) * R, kz + Math.sin(an) * R]); } }
+    const ph = new THREE.Path(); pts.forEach(([x, y], i) => i ? ph.lineTo(x, y) : ph.moveTo(x, y)); ph.closePath(); return ph;
+  };
+  const keyhole = wide => { const sh = rrShape(a, b, rc); sh.holes.push(pocket()); sh.holes.push(keyPts(wide)); return sh; };
+  layers.push(extrudeAt(keyhole(5), 0, 3));
+  layers.push(extrudeAt(keyhole(10.5), 3, 4.5));
+  const mid = rrShape(a, b, rc, usb && nd > 6 ? [18, 34, nd] : null); { const t = -(bz - 17.5), u = -(bz + 17.5), h = new THREE.Path(); h.moveTo(-3.3, 3.3); h.lineTo(-3.3, t); h.lineTo(-30.5, t); h.lineTo(-30.5, u); h.lineTo(30.5, u); h.lineTo(30.5, t); h.lineTo(3.3, t); h.lineTo(3.3, 3.3); h.closePath(); mid.holes.push(h); }   // battery pocket + wire channel up to the post
+  wlScrewXY(a, b).forEach(([x, y]) => mid.holes.push(circ(x, y, 1.3)));
+  layers.push(extrudeAt(mid, 7.5, WL.bp - 3 - 7.5));
+  const front = rrShape(a, b, rc); front.holes.push(circ(0, 0, 3.3)); wlScrewXY(a, b).forEach(([x, y]) => front.holes.push(circ(x, y, 1.3)));
+  layers.push(extrudeAt(front, WL.bp - 3, 3));
+  return mergeGeos(layers);
+}
+function wlPostGeometry(){
+  const D = wlData, yb = WL.bp + WL.fl, top = (D ? D.e : WL.bp + WL.fl + S.wlLed) - 3, V = (x, y) => new THREE.Vector2(x, y);
+  return fixLathe(new THREE.LatheGeometry([V(1.8, yb - 5), V(3.05, yb - 5), V(3.05, yb), V(8, yb), V(8, yb + 2), V(5, yb + 5), V(5, top), V(2.65, top), V(2.65, top - 6), V(1.8, top - 6), V(1.8, yb - 5)], 64));
+}
+function wlLitAt(wx, wz){
+  const D = wlData, r = Math.hypot(wx, wz), th = Math.atan2(wz, wx), ro = wlRadius(D.rO, th); if (r <= ro) return false;
+  const rm = wlRadius(D.rM, th), y = D.e * (1 - rm / r); if (y < D.hMin) return false; if (y >= D.yTop) return true;
+  return fieldAt(D, ((th < 0 ? th + Math.PI * 2 : th) / (Math.PI * 2)) * D.Na, y) < 0.5;
+}
+function updateWallPreview(){
+  const on = S.product === 'wall' && wlData;
+  if (!wlPlane){
+    wlPlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({transparent: true, depthWrite: false}));
+    wlPlane.rotation.x = -Math.PI / 2; wlPlane.renderOrder = -1; pivot.add(wlPlane);
+    wlGlow = new THREE.Mesh(new THREE.SphereGeometry(3, 20, 14), new THREE.MeshBasicMaterial({color: 0xffd27a})); pivot.add(wlGlow);
+  }
+  wlPlane.visible = wlGlow.visible = !!on; if (S.product === 'wall') shadow.visible = false;
+  if (!on) return;
+  const D = wlData, ext = Math.min(D.Rfar * 1.25, 1000), px = 1100, c = document.createElement('canvas'); c.width = c.height = px;
+  const g = c.getContext('2d'), img = g.createImageData(px, px), d = img.data;
+  for (let y = 0; y < px; y++) for (let x = 0; x < px; x++){
+    const wx = (x / (px - 1) * 2 - 1) * ext, wz = (y / (px - 1) * 2 - 1) * ext, r = Math.hypot(wx, wz), q = (y * px + x) * 4, fade = Math.max(0, Math.min(1, (ext - r) / (ext * 0.18)));
+    if (!wlLitAt(wx, wz)){ d[q] = 24; d[q+1] = 20; d[q+2] = 18; d[q+3] = Math.round(235 * fade); }
+    else { const I = Math.min(1, (D.e * D.e * 6) / (r * r * 0.03 + D.e * D.e)); d[q] = 255; d[q+1] = Math.round(222 + 20 * I); d[q+2] = Math.round(190 + 30 * I); d[q+3] = Math.round(255 * (0.3 + 0.7 * I) * fade); }
+  }
+  g.putImageData(img, 0, 0);
+  if (wlPlane.material.map) wlPlane.material.map.dispose();
+  wlPlane.material.map = new THREE.CanvasTexture(c); wlPlane.material.map.encoding = THREE.sRGBEncoding; wlPlane.material.needsUpdate = true;
+  wlPlane.scale.set(ext * 2, ext * 2, 1); wlPlane.position.set(0, 0.05, 0); wlGlow.position.set(0, D.e, 0);
+}
 // ---------- lamp base (bulb socket holder) ----------
 // A hollow tapered body with the logo on its side, a top plate that the socket clamps to, and a cord slot at the back.
 const ringMat = new THREE.MeshPhysicalMaterial({color: '#3a3d44', roughness: 0.45, clearcoat: 0.3});
@@ -940,6 +1116,7 @@ function buildStock(){
     mug.position.y = 0; const g = domeGeometry(); if (g){ const m = new THREE.Mesh(g, ringMat); m.name = 'Dome top'; baseGrp.add(m); baseGrp.position.y = slData.Hr; } return;
   }
   if (S.product === 'shadow' || S.product === 'proj'){ const m = new THREE.Mesh(lightBaseGeometry(), ringMat); m.name = 'Light base'; baseGrp.add(m); return; }
+  if (S.product === 'wall'){ mug.position.y = WL.bp; if (!wlData) return; const m1 = new THREE.Mesh(wlBackGeometry(), ringMat); m1.name = 'Back plate'; const m2 = new THREE.Mesh(wlPostGeometry(), ringMat); m2.name = 'LED post'; baseGrp.add(m1, m2); return; }
   if (S.product !== 'bulb') return;
   const P = bulbStockParts();
   P.cap.forEach(([n, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = n; capGrp.add(m); });
@@ -1037,7 +1214,7 @@ function frontInfo(){
   if (S.product === 'phone'){ const P = phoneProfile(); return {x0: -S.D/2, x1: S.D/2, zf: P.zF, lo: 3, hi: S.phLip - 3, rc: 3}; }
   const W = S.D, f = cadFootH(); return {x0: -W/2, x1: W/2, zf: S.cadDepth/2, lo: f + 3, hi: f + S.H * S.cadFront/100 - 3, rc: 6};
 }
-const PRODUCT_WORDS = {mug:'mug', pen:'pen-holder', duo:'duo-organiser', caddy:'desk-caddy', hex:'honeycomb-stand', phone:'phone-stand', hexcup:'hexagon-cup', steps:'step-organiser', tubes:'tube-cluster', card:'card-pen-holder', block:'pen-block', monitor:'monitor-holder', shadow:'shadow-ring', proj:'projector-shell', bulb:'lamp-base'};
+const PRODUCT_WORDS = {mug:'mug', pen:'pen-holder', duo:'duo-organiser', caddy:'desk-caddy', hex:'honeycomb-stand', phone:'phone-stand', hexcup:'hexagon-cup', steps:'step-organiser', tubes:'tube-cluster', card:'card-pen-holder', block:'pen-block', monitor:'monitor-holder', shadow:'shadow-ring', proj:'projector-shell', bulb:'lamp-base', wall:'wall-shadow-tray'};
 const productWord = () => PRODUCT_WORDS[S.product] || 'mug';
 // ---------- smooth cut-out shells (shadow + projector lamps) ----------
 // A lamp wall is described by a value at every grid node (around x up): 1 = solid, 0 = open, in between near
@@ -1125,7 +1302,9 @@ function smoothShell(F, Na, ys, rAt, thick, place, rInAt){
       if (ins[k]) pts.push({v: cs[k](), on: onEdges[k]});
       if (ins[k] !== ins[(k + 1) % 4]) pts.push({v: es[k](), on: [k], e: true});
     }
-    const th = (i + 0.5) / Na * Math.PI * 2, ym = (ys[j] + ys[j + 1]) / 2, c0 = place(th, 1, ym), out = [c0[0], 0, c0[2]], inn = [-c0[0], 0, -c0[2]];
+    const th = (i + 0.5) / Na * Math.PI * 2, ym = (ys[j] + ys[j + 1]) / 2, P1 = place(th, 1, ym), P2 = place(th, 2, ym), out = [P2[0]-P1[0], P2[1]-P1[1], P2[2]-P1[2]], inn = [-out[0], -out[1], -out[2]];
+    const U1 = place(th, 1, ym + 1e-3), T1 = place(th + 1e-3, 1, ym), nrm = v => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0]/l, v[1]/l, v[2]/l]; };
+    const up = nrm([U1[0]-P1[0], U1[1]-P1[1], U1[2]-P1[2]]), tg = nrm([T1[0]-P1[0], T1[1]-P1[1], T1[2]-P1[2]]);
     for (let k = 1; k + 1 < pts.length; k++){ tri(pts[0].v[0], pts[k].v[0], pts[k + 1].v[0], out); tri(pts[0].v[1], pts[k].v[1], pts[k + 1].v[1], inn); }
     // walls along cut edges, and along the bottom / top of the shell
     for (let k = 0; k < pts.length; k++){
@@ -1134,8 +1313,7 @@ function smoothShell(F, Na, ys, rAt, thick, place, rInAt){
       else { const sh = p.on.filter(x => q.on.includes(x)); if ((sh.includes(0) && j === 0) || (sh.includes(2) && j === Nh - 1)) wall = true; }
       if (!wall) continue;
       const du = (q.v[2] - p.v[2]) / Na * Math.PI * 2 * rAt((p.v[3] + q.v[3]) / 2, th), dy = q.v[3] - p.v[3];
-      const a0 = place(th, 1, 0), a1 = place(th + 1e-3, 1, 0), tl = Math.hypot(a1[0]-a0[0], a1[2]-a0[2]) || 1, tg = [(a1[0]-a0[0]) / tl, 0, (a1[2]-a0[2]) / tl];
-      const h = [tg[0] * dy, -du, tg[2] * dy];
+      const h = [tg[0] * dy - up[0] * du, tg[1] * dy - up[1] * du, tg[2] * dy - up[2] * du];
       tri(p.v[0], q.v[0], q.v[1], h); tri(p.v[0], q.v[1], p.v[1], h);
     }
   }
@@ -1264,7 +1442,7 @@ function updateShadowPreview(){
     slPlane.rotation.x = -Math.PI / 2; slPlane.renderOrder = -1; pivot.add(slPlane);
     slGlow = new THREE.Mesh(new THREE.SphereGeometry(4, 24, 16), new THREE.MeshBasicMaterial({color: 0xffd27a})); pivot.add(slGlow);
   }
-  slPlane.visible = slGlow.visible = !!on; shadow.visible = !on;
+  slPlane.visible = slGlow.visible = !!on; shadow.visible = !on && S.product !== 'wall';
   if (!on) return;
   const D = slData, ext = Math.min(D.Rfar * 1.3, 900), px = 1200, c = document.createElement('canvas'); c.width = c.height = px;
   const g = c.getContext('2d'), img = g.createImageData(px, px), d = img.data;
@@ -2214,7 +2392,8 @@ function build(){
   disposeMug();
   bodyMat.color.set(S.color); logoMat.color.set(S.logoColor);
   bodyMat.roughness = isFlat() ? 0.68 : 0.32; bodyMat.clearcoat = isFlat() ? 0.05 : 0.7; bodyMat.envMapIntensity = isFlat() ? 0.42 : 0.8;
-  if (S.product === 'proj') projectorGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
+  if (S.product === 'wall') wallGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, /Logo/.test(name) ? logoMat : bodyMat); m.name = name; mug.add(m); });
+  else if (S.product === 'proj') projectorGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
   else if (S.product === 'shadow') shadowGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
   else if (S.product === 'block') blockGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
   else if (S.product === 'monitor') monitorGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
@@ -2233,16 +2412,16 @@ function build(){
   buildStock();
   layerL = null; if (logoBase) logoProc = logoBase;
   const activeLayers = S.layers.filter(t => t.text.trim());
-  if (logoBase && activeLayers.length && S.product !== 'shadow' && S.product !== 'proj'){ composeLayers(activeLayers); }
+  if (logoBase && activeLayers.length && S.product !== 'shadow' && S.product !== 'proj' && S.product !== 'wall'){ composeLayers(activeLayers); }
   else if (logoBase && logoInk && logoInk._for !== logoBase){ logoInk = computeInk(logoBase); logoInk._for = logoBase; labelCache = null; }
-  if (logoProc && S.product !== 'shadow' && S.product !== 'proj'){
+  if (logoProc && S.product !== 'shadow' && S.product !== 'proj' && S.product !== 'wall'){
     const L = logoLayout();
     if (S.mode === 'print') mug.add(decalMesh(L));
     else angles().forEach(a => mug.add(reliefMesh(L, a)));
     $('lwOut').textContent = L.w.toFixed(0) + ' × ' + L.h.toFixed(0) + ' mm';
   }
-  pivot.position.y = S.product === 'shadow' ? -(slData ? slData.e : 20) / 2 : S.product === 'proj' ? -S.prH / 2 : -S.H/2;
-  updateShadowPreview(); drawShadowPicker(); updateProjectorPreview();
+  pivot.position.y = S.product === 'wall' ? -(wlData ? wlData.e : 60) / 2 : S.product === 'shadow' ? -(slData ? slData.e : 20) / 2 : S.product === 'proj' ? -S.prH / 2 : -S.H/2;
+  updateShadowPreview(); drawShadowPicker(); updateProjectorPreview(); updateWallPreview();
   const s = S.product === 'proj' ? S.prLed * 2.6 : S.product === 'shadow' ? 0.001 : S.product === 'block' ? S.D * 1.3 : S.product === 'monitor' ? S.D * 1.2 : S.product === 'tubes' ? (tubesPlinth().x1 - tubesPlinth().x0) * 1.3 : S.product === 'card' ? S.D * 1.3 : S.product === 'hexcup' ? S.D * 1.8 : S.product === 'steps' ? Math.max(S.D * S.stBays, S.stDepth) * 1.4 : S.product === 'phone' ? Math.max(S.D, S.H) * 1.5 : S.product === 'hex' ? (hexPlinth().x1 - hexPlinth().x0) * 1.4 : S.product === 'caddy' ? Math.max(S.D, S.cadDepth) * 1.6 : S.product === 'duo' ? Math.max(S.D, S.duoLen) * 1.5 : S.D * 1.7; shadow.scale.set(s, s, 1); shadow.position.set(S.handle && S.product === 'mug' ? 8 : 0, 0.05, 0);
   updateReadout();
   if (typeof showFilaments === 'function') try { showFilaments(); } catch (e) {}
@@ -2282,7 +2461,7 @@ function updateReadout(){
     `<span class="tag"><i>H</i><b>${sz.y.toFixed(0)}</b></span>` +
     `<span class="tag"><i>W</i><b>${sz.x.toFixed(0)}</b></span>` +
     `<span class="tag"><i>D</i><b>${sz.z.toFixed(0)} mm</b></span>` +
-    (S.product === 'bulb' ? `<span class="tag"><i>Socket hole</i><b>Ø ${S.bhHole} mm</b></span>` : S.product === 'proj' ? `<span class="tag"><i>Projects</i><b>${Math.round(S.prSize / 10)} cm at ${Math.round(S.prDist / 10)} cm</b></span>` : S.product === 'shadow' ? `<span class="tag"><i>Shadow</i><b>≈ ${slData ? Math.round(slData.Rfar * 2 / 10) : '–'} cm</b></span>` + (slData && slData.dome ? `<span class="tag"><i>Ring</i><b>${Math.round(slData.Hr)} mm tall</b></span>` + (slData.dropShort ? `<span class="tag warn"><i>Bulb drop</i><b>needs ≥ ${Math.ceil(slData.needDrop)} mm</b></span>` : '') : '') : S.product === 'block' ? `<span class="tag"><i>Holes</i><b>${blockHoles().length}</b></span>` : S.product === 'monitor' ? `<span class="tag"><i>Holds</i><b>pens in the screen</b></span>` : S.product === 'tubes' ? `<span class="tag"><i>Tubes</i><b>${tubeCells().length}</b></span>` : S.product === 'card' ? `<span class="tag"><i>Holds</i><b>cards + pens</b></span>` : S.product === 'hexcup' ? `<span class="tag"><i>Fits</i><b>≈ ${Math.max(4, Math.floor(Math.pow((S.D - 2*S.wall)/2, 2) * 0.42 / 21))} pens</b></span>` : S.product === 'steps' ? `<span class="tag"><i>Bays</i><b>${S.stBays}</b></span>` : S.product === 'phone' ? `<span class="tag"><i>Fits</i><b>phones up to ${S.phSlot} mm</b></span>` : S.product === 'hex' ? `<span class="tag"><i>Fits</i><b>≈ ${hexCells().length * Math.max(2, Math.floor(Math.pow((S.D - 2*S.wall) / 9.5, 2) * 0.8))} pens</b></span>` : S.product === 'caddy' ? `<span class="tag"><i>Holds</i><b>phone + pens</b></span>` : S.product === 'duo' ? `<span class="tag"><i>Holds</i><b>cup + tray</b></span>` : S.product === 'pen'
+    (S.product === 'wall' ? `<span class="tag"><i>Shadow</i><b>≈ ${wlData ? Math.round(wlData.Rfar * 2 / 10) : '–'} cm</b></span><span class="tag"><i>Tray</i><b>${S.wlW}×${S.wlD}×${wlData ? Math.round(wlData.yTop - WL.bp) : '–'} mm</b></span>` : S.product === 'bulb' ? `<span class="tag"><i>Socket hole</i><b>Ø ${S.bhHole} mm</b></span>` : S.product === 'proj' ? `<span class="tag"><i>Projects</i><b>${Math.round(S.prSize / 10)} cm at ${Math.round(S.prDist / 10)} cm</b></span>` : S.product === 'shadow' ? `<span class="tag"><i>Shadow</i><b>≈ ${slData ? Math.round(slData.Rfar * 2 / 10) : '–'} cm</b></span>` + (slData && slData.dome ? `<span class="tag"><i>Ring</i><b>${Math.round(slData.Hr)} mm tall</b></span>` + (slData.dropShort ? `<span class="tag warn"><i>Bulb drop</i><b>needs ≥ ${Math.ceil(slData.needDrop)} mm</b></span>` : '') : '') : S.product === 'block' ? `<span class="tag"><i>Holes</i><b>${blockHoles().length}</b></span>` : S.product === 'monitor' ? `<span class="tag"><i>Holds</i><b>pens in the screen</b></span>` : S.product === 'tubes' ? `<span class="tag"><i>Tubes</i><b>${tubeCells().length}</b></span>` : S.product === 'card' ? `<span class="tag"><i>Holds</i><b>cards + pens</b></span>` : S.product === 'hexcup' ? `<span class="tag"><i>Fits</i><b>≈ ${Math.max(4, Math.floor(Math.pow((S.D - 2*S.wall)/2, 2) * 0.42 / 21))} pens</b></span>` : S.product === 'steps' ? `<span class="tag"><i>Bays</i><b>${S.stBays}</b></span>` : S.product === 'phone' ? `<span class="tag"><i>Fits</i><b>phones up to ${S.phSlot} mm</b></span>` : S.product === 'hex' ? `<span class="tag"><i>Fits</i><b>≈ ${hexCells().length * Math.max(2, Math.floor(Math.pow((S.D - 2*S.wall) / 9.5, 2) * 0.8))} pens</b></span>` : S.product === 'caddy' ? `<span class="tag"><i>Holds</i><b>phone + pens</b></span>` : S.product === 'duo' ? `<span class="tag"><i>Holds</i><b>cup + tray</b></span>` : S.product === 'pen'
       ? `<span class="tag"><i>Fits</i><b>≈ ${penCount()} pens</b></span>`
       : `<span class="tag"><i>Holds</i><b>≈ ${Math.round(capacityMl() / 5) * 5} ml</b></span>`);
 }
@@ -2328,6 +2507,11 @@ const PRESETS = {
     ['latte', 'Tall latte', '~450 ml', {mh:118, md:84, mt:4, mw:4, mb:6, handle:true}],
     ['espresso', 'Espresso', '~150 ml', {mh:70, md:64, mt:3, mw:3.5, mb:6, handle:true}],
     ['tumbler', 'Tumbler', 'no handle', {mh:125, md:80, mt:12, mw:4, mb:6, handle:false}]
+  ],
+  wall: [
+    ['wlStd', 'Standard', '15 × 12 cm · 60 cm shadow', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#d23a2a', logoColor:'#141414', wlW:150, wlD:120, wlSize:600, wlLed:60, wlWall:2, texture:'smooth'}],
+    ['wlBig', 'Large shadow', '18 × 14 cm · 90 cm shadow', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#2b2d33', logoColor:'#ffd27a', wlW:180, wlD:140, wlSize:900, wlLed:75, wlWall:2.2, texture:'smooth'}],
+    ['wlSmall', 'Compact', '12 × 10 cm · 45 cm shadow', {mh:80, md:80, mw:1.8, mb:2, handle:false, color:'#2f4cb3', logoColor:'#ffffff', wlW:120, wlD:100, wlSize:450, wlLed:50, wlWall:1.8, texture:'smooth'}]
   ],
   bulb: [
     ['bhClassic', 'Classic', 'E27 · tapered', {mh:110, md:76, mt:-30, mw:3, mb:3, handle:false, divider:0, slant:0, texture:'smooth', color:'#f2f0ec', bhSocket:'e27', ly:42}],
@@ -2421,7 +2605,7 @@ function applyPreset(key, p){
   $('handle').checked = p.handle; S.handle = p.handle;
   if (p.divider !== undefined){ S.divider = p.divider; $('divider').value = String(p.divider); }
   setTexture(p.texture || (S.product === 'duo' ? 'ribbed' : 'smooth'), true);
-  [['prDist','prDist'],['prSize','prSize'],['prLift','prLift'],['prBars','prBars'],['prWidth','prWidth'],['prH','prH'],['prLed','prLed'],['prLight','prLight'],['prWall','prWall'],['slSize','slSize'],['slDrop','slDrop'],['slRing','slRing'],['slRays','slRays'],['slLed','slLed'],['slLight','slLight'],['slSmooth','slSmooth'],['slWall','slWall'],['pbHole','pbHole'],['pbDepth','pbDepth'],['mnDepth','mnDepth'],['mnNeck','mnNeck'],['tbBase','tbBase'],['tbStep','tbStep'],['cpCup','cpCup'],['cpFront','cpFront'],['cpSlot','cpSlot'],['stDepth','stDepth'],['stLow','stLow'],['phAngle','phAngle'],['phSlot','phSlot'],['phLip','phLip'],['hexBase','hexBase'],['hexStep','hexStep'],['cadDepth','cadDepth'],['cadFront','cadFront'],['cadSlot','cadSlot'],['duoLen','duoLen'],['duoH2','duoH2'],['texCols','texCols'],['texDepth','texDepth'],['lw','logoW'],['ly','ly']].forEach(([id, k]) => { if (p[k] !== undefined){ $(id).value = p[k]; $(id).dispatchEvent(new Event('input')); } });
+  [['prDist','prDist'],['prSize','prSize'],['prLift','prLift'],['prBars','prBars'],['prWidth','prWidth'],['prH','prH'],['prLed','prLed'],['prLight','prLight'],['prWall','prWall'],['slSize','slSize'],['wlW','wlW'],['wlD','wlD'],['wlSize','wlSize'],['wlLed','wlLed'],['wlWall','wlWall'],['slDrop','slDrop'],['slRing','slRing'],['slRays','slRays'],['slLed','slLed'],['slLight','slLight'],['slSmooth','slSmooth'],['slWall','slWall'],['pbHole','pbHole'],['pbDepth','pbDepth'],['mnDepth','mnDepth'],['mnNeck','mnNeck'],['tbBase','tbBase'],['tbStep','tbStep'],['cpCup','cpCup'],['cpFront','cpFront'],['cpSlot','cpSlot'],['stDepth','stDepth'],['stLow','stLow'],['phAngle','phAngle'],['phSlot','phSlot'],['phLip','phLip'],['hexBase','hexBase'],['hexStep','hexStep'],['cadDepth','cadDepth'],['cadFront','cadFront'],['cadSlot','cadSlot'],['duoLen','duoLen'],['duoH2','duoH2'],['texCols','texCols'],['texDepth','texDepth'],['lw','logoW'],['ly','ly']].forEach(([id, k]) => { if (p[k] !== undefined){ $(id).value = p[k]; $(id).dispatchEvent(new Event('input')); } });
   if (p.depth){ $('depth').value = p.depth; $('depth').dispatchEvent(new Event('input')); }
   if (p.text !== undefined){ S.text = p.text; $('logoText').value = p.text; }
   if (p.textColor){ S.textColor = p.textColor; $('textColor').value = p.textColor; }
@@ -2499,7 +2683,8 @@ function setProduct0(prod){
   $('prodTubes').setAttribute('aria-pressed', String(prod === 'tubes')); $('tubesOpts').hidden = prod !== 'tubes';
   $('prodCard').setAttribute('aria-pressed', String(prod === 'card')); $('cardOpts').hidden = prod !== 'card';
   $('prodBlock').setAttribute('aria-pressed', String(prod === 'block')); $('blockOpts').hidden = prod !== 'block';
-  const pr = prod === 'proj', sl = prod === 'shadow' || pr;
+  const wl = prod === 'wall', pr = prod === 'proj', sl = prod === 'shadow' || pr || wl;
+  $('prodWall').setAttribute('aria-pressed', String(wl)); $('wallOpts').hidden = !wl; $('wallExport').hidden = !wl;
   $('prodShadow').setAttribute('aria-pressed', String(prod === 'shadow')); $('shadowOpts').hidden = prod !== 'shadow';
   $('prodProj').setAttribute('aria-pressed', String(pr)); $('projOpts').hidden = !pr;
   ['grpMade', 'grpSize', 'grpExtra', 'grpDims', 'texOpts'].forEach(id => { const el = $(id); if (el) el.hidden = sl; });
@@ -2531,6 +2716,27 @@ $('prodTubes').addEventListener('click', () => { if (S.product !== 'tubes') setP
 $('prodCard').addEventListener('click', () => { if (S.product !== 'card') setProduct('card'); });
 $('prodBlock').addEventListener('click', () => { if (S.product !== 'block') setProduct('block'); });
 $('prodBulb').addEventListener('click', () => { if (S.product !== 'bulb') setProduct('bulb'); });
+$('prodWall').addEventListener('click', () => { if (S.product !== 'wall'){ setProduct('wall'); setTimeout(resetView, 60); } });
+$('wlPic').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return; const url = URL.createObjectURL(f), im = new Image();
+  im.onload = () => { const k = Math.min(1, 1200 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); wlPicCanvas = c; URL.revokeObjectURL(url); $('wlPicNote').textContent = 'Shadow uses: ' + f.name + ' (the floor keeps the main logo).'; rebuild(); setTimeout(resetView, 60); };
+  im.src = url; e.target.value = '';
+});
+$('wlPicClear').addEventListener('click', () => { wlPicCanvas = null; $('wlPicNote').textContent = 'Using the main logo.'; rebuild(); });
+$('wlPower').addEventListener('change', e => { S.wlPower = e.target.value; rebuild(); });
+$('wlFront').addEventListener('change', e => { S.wlFront = e.target.checked; rebuild(); });
+$('dlWallBack').addEventListener('click', async () => {
+  busy(true); status('Building the back plate…');
+  try { const g = wlBackGeometry(); const [f] = placed([g], false); await deliver('wall-lamp-back-plate-STOCK-' + S.wlW + 'x' + S.wlD + (S.wlPower === 'usb' ? '-usbc' : '') + '.stl', stlBinary([f], 'wall lamp back plate (stock)'), 'model/stl'); g.dispose(); f.dispose(); }
+  catch (e) { status('Back plate export failed: ' + (e && e.message ? e.message : e)); }
+  busy(false);
+});
+$('dlWallPost').addEventListener('click', async () => {
+  busy(true); status('Building the LED post…');
+  try { const g = wlPostGeometry(); const [f] = placed([g], true); await deliver('wall-lamp-led-post-STOCK-' + S.wlLed + 'mm.stl', stlBinary([f], 'wall lamp LED post (stock)'), 'model/stl'); g.dispose(); f.dispose(); }
+  catch (e) { status('LED post export failed: ' + (e && e.message ? e.message : e)); }
+  busy(false);
+});
 const BULB_HOLES = {e27: 40.5, e14: 29, m10: 10.5}, BULB_COLLAR = {e27: 4, e14: 3, m10: 0};
 function setSocket(v){ S.bhSocket = v; $('bhSocket').value = v; [['bhHole', BULB_HOLES[v]], ['bhCollar', BULB_COLLAR[v]]].forEach(([id, val]) => { $(id).value = val; $(id).dispatchEvent(new Event('input')); }); }
 $('bhSocket').addEventListener('change', e => setSocket(e.target.value));
@@ -2615,7 +2821,8 @@ bindRange('duoLen', 'duoLen', v => v + ' mm');
 $('slant').addEventListener('input', e => { S.slant = parseFloat(e.target.value) / 100; $('slantOut').textContent = S.slant ? e.target.value + '%' : 'Flat'; rebuild(); });
 $('slantOut').textContent = 'Flat';
 bindRange('prDist', 'prDist', v => Math.round(v / 10) + ' cm'); bindRange('prSize', 'prSize', v => Math.round(v / 10) + ' cm'); bindRange('prLift', 'prLift', v => (v >= 0 ? '+' : '') + Math.round(v / 10) + ' cm');
-bindRange('prWidth', 'prWidth', v => v + ' mm'); bindRange('bhHole', 'bhHole', v => v + ' mm'); bindRange('bhCollar', 'bhCollar', v => v ? v + ' mm' : 'None');  bindRange('bhCord', 'bhCord', v => v + ' mm'); bindRange('prBars', 'prBars', v => v ? v + '' : 'None'); bindRange('prH', 'prH', v => v + ' mm'); bindRange('prLed', 'prLed', v => v + ' mm'); bindRange('prLight', 'prLight', v => v + ' mm'); bindRange('prWall', 'prWall', v => v.toFixed(1) + ' mm');
+bindRange('prWidth', 'prWidth', v => v + ' mm'); bindRange('wlSize', 'wlSize', v => Math.round(v / 10) + ' cm'); bindRange('wlLed', 'wlLed', v => v + ' mm'); bindRange('wlW', 'wlW', v => v + ' mm'); bindRange('wlD', 'wlD', v => v + ' mm'); bindRange('wlWall', 'wlWall', v => v.toFixed(1) + ' mm');
+bindRange('bhHole', 'bhHole', v => v + ' mm'); bindRange('bhCollar', 'bhCollar', v => v ? v + ' mm' : 'None');  bindRange('bhCord', 'bhCord', v => v + ' mm'); bindRange('prBars', 'prBars', v => v ? v + '' : 'None'); bindRange('prH', 'prH', v => v + ' mm'); bindRange('prLed', 'prLed', v => v + ' mm'); bindRange('prLight', 'prLight', v => v + ' mm'); bindRange('prWall', 'prWall', v => v.toFixed(1) + ' mm');
 bindRange('slSize', 'slSize', v => Math.round(v / 10) + ' cm'); bindRange('slRays', 'slRays', v => v ? v + '' : 'None'); bindRange('slLed', 'slLed', v => v + ' mm');
 ['slMin', 'prMin'].forEach(id => { $(id).addEventListener('input', e => { S.minFeat = parseFloat(e.target.value); ['slMin', 'prMin'].forEach(k => { $(k).value = S.minFeat; $(k + 'Out').textContent = S.minFeat.toFixed(1) + ' mm'; }); rebuild(); }); $(id + 'Out').textContent = '1.2 mm'; });
 bindRange('slLight', 'slLight', v => v + ' mm'); bindRange('slSmooth', 'slSmooth', v => v ? v + '' : 'Off'); bindRange('slWall', 'slWall', v => v.toFixed(1) + ' mm'); bindRange('slRing', 'slRing', v => v + ' mm'); bindRange('slDrop', 'slDrop', v => v + ' mm');
@@ -2909,7 +3116,7 @@ function build3mf(){
     if (o.userData.decal) return;
     const w = weld(o.geometry), isLogo = /Logo/.test(o.name), cols = new Uint8Array(w.tris.length/3);
     if (isLogo){
-      if (uvData){
+      if (uvData && o.geometry.index && o.geometry.attributes.uv){
         const all = triLabels(o.geometry, LM3);
         w.src.forEach((t, k) => { cols[k] = all[t/3]; });
       } else cols.fill(Math.min(1, pal.length-1));
@@ -3028,6 +3235,7 @@ function applyPreview(){
   const noLogoGeo = S.mode !== 'raised' && logoProc;
   mug.visible = previewMode === 'studio'; stockGrp.visible = previewMode === 'studio';
   if (prWallMesh){ prWallMesh.visible = prGlow.visible = previewMode === 'studio' && S.product === 'proj' && !!prData; }
+  if (wlPlane){ wlPlane.visible = wlGlow.visible = previewMode === 'studio' && S.product === 'wall' && !!wlData; }
   if (slPlane){ slPlane.visible = slGlow.visible = previewMode === 'studio' && S.product === 'shadow' && !!slData; }
   shadow.visible = true;
   if (previewMode === 'studio'){
