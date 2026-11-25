@@ -606,6 +606,8 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
         <label class="check"><input type="checkbox" id="mkLines" checked> <span>Glow lines</span></label>
         <label class="check"><input type="checkbox" id="mkVents" checked> <span>Vents</span></label>
         <label class="check"><input type="checkbox" id="mkGlow" checked> <span>Show glow in the preview</span></label>
+        <label class="check"><input type="checkbox" id="mkExplode"> <span>Show the parts apart (exploded view)</span></label>
+        <span class="note"><b>Parts:</b> main shell (custom logo) · side frames L/R (half mask; pin on with 2 mm pins or M2 screws, carry the strap slot) · glow-line diffusers L/R and a logo diffuser (print in white or clear PETG, glue inside). Download them all from Export → Mask parts kit. Add foam padding inside for comfort.</span>
         <span class="note"><b>Making it glow:</b> stick a thin white diffuser (tracing paper, frosted film or a 0.4 mm white print) inside over the cut-outs, then a 5 V USB LED strip or EL wire behind it, powered from a small power bank in a pocket. Thread a 20–25 mm elastic strap through the side slots.</span>
         <span class="note"><b>Printing:</b> exported standing on its chin edge, which needs few supports (tree supports, touching the build plate only). Print in matte black PLA/PETG, 0.16 mm layers, 3 walls. Bold logos work best; thin lines are joined with small bridges automatically. Smooth any edges near the face before wearing.</span>
       </div>
@@ -685,6 +687,11 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
         <button class="btn ghost" id="dlStlSet">Download STL colour set (.zip)<small>One STL per filament colour · load all together, pick a filament for each part · works in Cura too</small></button>
         <button class="btn ghost" id="dlStl">Download STL · single colour<small>One solid mesh in mm · any slicer</small></button>
       </div>
+      <div class="grp" id="maskExport" hidden>
+        <h3>Mask parts kit</h3>
+        <button class="btn primary" id="dlMaskKit">Download mask parts kit (.zip)<small>Main shell · side frames L/R · LED diffusers · assembly notes</small></button>
+        <span class="note">The STL / 3MF downloads above contain only the main shell.</span>
+      </div>
       <div class="grp" id="wallExport" hidden>
         <h3>Wall lamp parts (print once)</h3>
         <button class="btn primary" id="dlWallBack">Download back plate STL<small>Battery pocket, keyhole for a wall screw, M3 holes · fits every tray of this size</small></button>
@@ -724,7 +731,7 @@ const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const S = {
-  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:22, mkLine:3.5, mkLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
+  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:22, mkLine:3.5, mkLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkExplode:false, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
   mode:'raised', logoW:52, angle:0, ly:44, both:false,
   depth:1.6, thr:0.5, invert:false, heightSrc:'layered', reliefColor:'full', smooth:2, hiDetail:false, logoColor:'#1d2c7a', removeBg:true, stickerW:0, nColors:5, text:'', textFont:"800|'Baloo 2'", textPos:'below', textSize:27, textColor:'#12939a'
 };
@@ -876,12 +883,16 @@ const MASKS = {
   half: {H: 90, Rref: 90,
     // right half of the outline, chin centre -> nose bridge (mirrored)
     // pointed chin, horns, side fins joined to the cheeks at top and bottom
-    outline: [[0, 0], [6, 0], [24, 5], [46, 10], [70, 18], [84, 16], [96, 12], [104, 24], [106, 58], [100, 72], [86, 66], [80, 70], [74, 74], [64, 90], [52, 80], [30, 64], [16, 77], [0, 87]],
+    outline: [[0, 0], [6, 0], [24, 5], [46, 10], [70, 18], [86, 24], [91, 40], [91, 60], [84, 70], [74, 74], [64, 90], [52, 80], [30, 64], [16, 77], [0, 87]],
     // raised plates [polygon, height mm] (right half, mirrored): nose plate, cheek blades, side fins, outer cheeks
     raise: [[[[0, 87], [16, 77], [13, 57], [0, 54]], 3], [[[30, 64], [22, 40], [8, 8], [14, 6], [34, 36], [48, 62], [64, 90], [52, 80]], 4.2],
-            [[[88, 18], [96, 12], [104, 24], [106, 58], [100, 72], [88, 66]], 2.6], [[[48, 62], [80, 70], [84, 20], [40, 14]], 1.4]],
+            [[[48, 62], [80, 70], [84, 20], [40, 14]], 1.4]],
+    pins: [[87, 33], [87, 55]],
+    // separate side frame (right; the left one is mirrored): sits on the shell's side and carries the strap slot
+    frame: {poly: [[82, 18], [96, 10], [107, 22], [109, 58], [101, 75], [86, 71], [82, 64]], raise: [[[[88, 22], [100, 18], [104, 30], [104, 52], [98, 66], [88, 62]], 1.6]],
+            holes: [[[90, 52], [97, 55], [98, 45], [91, 43]], [[90, 33], [97, 35], [97, 25], [90, 23]]], slot: [[103.5, 30], [103.5, 52]], thick: 3},
     ctrlA: [0, 12, 24, 36, 48, 60, 72], ctrlR: [97, 95, 90, 84, 78, 73, 70],
-    logo: [0, 71, 1, 0.62], strap: [98.5, 30, 52]},
+    logo: [0, 71, 1, 0.62], strap: null},
   full: {H: 215, Rref: 90,
     outline: [[0, 0], [10, 0], [26, 4], [62, 14], [96, 36], [116, 72], [124, 118], [122, 156], [108, 186], [80, 206], [42, 214], [0, 216]],
     ctrlA: [0, 12, 24, 36, 48, 60, 72, 84], ctrlR: [100, 98, 93, 87, 81, 76, 72, 70],
@@ -908,7 +919,7 @@ function mkShapes(){
       for (let k = 0; k < 4; k++){ const y = 49 - 7 * k; both([[5.5, y], [19 - (49 - y) * 0.17, y - 1.2]], 3.2); }
       bothPoly([[60, 60], [72, 62], [76, 48], [64, 46]]); bothPoly([[58, 38], [74, 40], [72, 26], [56, 24]]);
     }
-    both([[86.5, 24], [87.5, 60]], 2.4);          // gap that makes the side fin look separate (joined top and bottom)
+    M.pins.forEach(([x, y]) => both([[x, y], [x, y + 0.01]], 2.3));   // pin holes for the side frames
   } else {
     const e = S.mkEyes;
     if (e === 'x'){ both([[24, 110], [52, 140]], 7); both([[24, 140], [52, 110]], 7); }
@@ -922,7 +933,7 @@ function mkShapes(){
     if (S.mkVents){ for (let k = 0; k < 3; k++) both([[70, 92 - 9 * k], [86, 96 - 9 * k]], 3.4); }
   }
   // strap slots (always)
-  const [sx, y0, y1] = M.strap; both([[sx, y0], [sx, y1]], 4.4);
+  if (M.strap){ const [sx, y0, y1] = M.strap; both([[sx, y0], [sx, y1]], 4.4); }
   return cuts;
 }
 function mkRadius(th, y){
@@ -987,6 +998,53 @@ function maskGeometries(){
   const g = smoothShell(D.F, D.Na, D.ys, (y, th) => mkRadius(th, y) + mkRaise(th, y), S.mkWall, place, (y, th) => mkRadius(th, y) - S.mkWall);
   g.translate(0, -D.ys[0], 0);
   return [['Mask shell', g]];
+}
+function mkFieldFrom(vfun, x0, x1){
+  // a smooth field on the mask grid from a signed function (mm, positive = solid), only for |X| in [x0, x1]
+  const D = mkData, M = MASKS[S.mkStyle], k = D.k, cell = (D.ys[1] - D.ys[0]), F = new Float32Array(D.Na * D.NN);
+  for (let i = 0; i < D.Na; i++){
+    let th = i / D.Na * Math.PI * 2; if (th > Math.PI) th -= Math.PI * 2; const X = th * M.Rref; if (X < x0 - 3 || X > x1 + 3) continue;
+    for (let j = 0; j < D.NN; j++){ const v = vfun(X, D.ys[j] / k); if (v > -3) F[i * D.NN + j] = Math.max(0, Math.min(1, 0.5 + v * k / (cell * 1.6))); }
+  }
+  return F;
+}
+const capD = (pts, X, Y) => { let d = Infinity; for (let q = 0; q + 1 < pts.length; q++) d = Math.min(d, sdSeg(X, Y, pts[q][0], pts[q][1], pts[q + 1][0], pts[q + 1][1])); return d; };
+function mkShellOut(th, y){ return mkRadius(th, y) + mkRaise(th, y); }
+function mkPartGeos(){
+  // separate printed parts: side frames (half mask) and LED diffusers (glow lines + logo)
+  const D = mkData; if (!D) return {frames: [], diff: []};
+  const M = MASKS[S.mkStyle], k = D.k, place = (th, r, y) => [Math.sin(th) * r, y - D.ys[0], Math.cos(th) * r], frames = [], diff = [];
+  const shellIn = (y, th) => mkRadius(th, y) - S.mkWall;
+  if (M.frame){
+    const Fr = M.frame;
+    [1, -1].forEach(sd => {
+      const mir = P => P.map(([x, y]) => [x * sd, y]);
+      const poly = mir(Fr.poly), holes = Fr.holes.map(mir), slot = mir(Fr.slot), pins = M.pins.map(([x, y]) => [x * sd, y]), rz = Fr.raise.map(([P, h]) => [mir(P), h]);
+      const xs = poly.map(p => p[0]), x0 = Math.min(...xs), x1 = Math.max(...xs);
+      const F = mkFieldFrom((X, Y) => { let v = -sdPoly(poly, X, Y); holes.forEach(H => { v = Math.min(v, sdPoly(H, X, Y)); }); v = Math.min(v, capD(slot, X, Y) - 2.2); pins.forEach(([px, py]) => { v = Math.min(v, Math.hypot(X - px, Y - py) - 1.15); }); return v; }, x0, x1);
+      const fRaise = (th, y) => { const X = th * M.Rref, Y = y / k; let r = 0; for (const [P, h] of rz){ const d = sdPoly(P, X, Y); if (d < 0){ const t = Math.min(1, -d / 2.6); r = Math.max(r, h * t * t * (3 - 2 * t)); } } return r * k; };
+      const wrap = th => ((th + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+      const rin = (y, th) => mkShellOut(th, y) + 0.25, rout = (y, th) => rin(y, th) + Fr.thick + fRaise(wrap(th), y);
+      frames.push([sd > 0 ? 'Side frame R' : 'Side frame L', smoothShell(F, D.Na, D.ys, rout, Fr.thick, place, rin)]);
+    });
+  }
+  // glow-line diffusers: a plug that fills the channel + a 1.6 mm wider flange inside the shell
+  const lines = mkShapes().filter(([pts, wd]) => wd === S.mkLine && pts.length > 2);
+  lines.forEach(([pts], n) => {
+    const xs = pts.map(p => p[0]), x0 = Math.min(...xs), x1 = Math.max(...xs);
+    const plug = mkFieldFrom((X, Y) => S.mkLine / 2 - 0.18 - capD(pts, X, Y), x0, x1);
+    const flange = mkFieldFrom((X, Y) => S.mkLine / 2 + 1.6 - capD(pts, X, Y), x0, x1);
+    const g1 = smoothShell(plug, D.Na, D.ys, (y, th) => mkShellOut(th, y) - 0.2, 1, place, (y, th) => shellIn(y, th));
+    const g2 = smoothShell(flange, D.Na, D.ys, (y, th) => shellIn(y, th) + 0.02, 0.8, place, (y, th) => shellIn(y, th) - 0.8);
+    diff.push([(x0 + x1 > 0 ? 'Diffuser R' : 'Diffuser L') + (lines.length > 2 ? ' ' + (n + 1) : ''), mergeGeos([g1, g2])]);
+  });
+  // logo diffuser: thin plate glued behind the logo window
+  if (S.mkLogo && slMask()){
+    const L = slMask(), [lx, ly] = M.logo, lw = S.mkLogoW, lh = lw * L.h / L.w, box = [[lx - lw / 2 - 2.5, ly - lh / 2 - 2.5], [lx + lw / 2 + 2.5, ly - lh / 2 - 2.5], [lx + lw / 2 + 2.5, ly + lh / 2 + 2.5], [lx - lw / 2 - 2.5, ly + lh / 2 + 2.5]];
+    const outl = mkOutline(M), F = mkFieldFrom((X, Y) => Math.min(-sdPoly(box, X, Y), -sdPoly(outl, X, Y) - 2), box[0][0], box[1][0]);
+    diff.push(['Logo diffuser', smoothShell(F, D.Na, D.ys, (y, th) => shellIn(y, th) - 0.05, 0.8, place, (y, th) => shellIn(y, th) - 0.85)]);
+  }
+  return {frames, diff};
 }
 function maskGlowGeometry(){
   // preview only: a glowing layer just inside the shell, seen through the cut-outs
@@ -1281,7 +1339,15 @@ function buildStock(){
     mug.position.y = 0; const g = domeGeometry(); if (g){ const m = new THREE.Mesh(g, ringMat); m.name = 'Dome top'; baseGrp.add(m); baseGrp.position.y = slData.Hr; } return;
   }
   if (S.product === 'shadow' || S.product === 'proj'){ const m = new THREE.Mesh(lightBaseGeometry(), ringMat); m.name = 'Light base'; baseGrp.add(m); return; }
-  if (S.product === 'mask'){ if (S.mkGlow && mkData){ const g = maskGlowGeometry(); if (g){ const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({color: S.mkGlowCol, side: THREE.DoubleSide})); m.name = 'Glow (preview)'; baseGrp.add(m); } } return; }
+  if (S.product === 'mask'){
+    if (mkData){
+      const P = mkPartGeos(), ex = S.mkExplode, glowMat = new THREE.MeshBasicMaterial({color: S.mkGlowCol, side: THREE.DoubleSide});
+      const shift = (m, g) => { if (!ex) return; g.computeBoundingBox(); const c = new THREE.Vector3(); g.boundingBox.getCenter(c); const d = new THREE.Vector3(c.x, 0, c.z).normalize(); m.position.copy(d.multiplyScalar(m.name.startsWith('Side') ? 36 : 16)); if (!m.name.startsWith('Side')) m.position.y += m.name.startsWith('Logo') ? 22 : 0; };
+      P.frames.forEach(([n, g]) => { const m = new THREE.Mesh(g, ringMat); m.name = n; shift(m, g); baseGrp.add(m); });
+      P.diff.forEach(([n, g]) => { const m = new THREE.Mesh(g, S.mkGlow ? glowMat : new THREE.MeshPhysicalMaterial({color: '#f4f2ff', roughness: 0.6, transmission: 0.3})); m.name = n; shift(m, g); baseGrp.add(m); });
+      if (ex) return;
+    }
+    if (S.mkGlow && mkData){ const g = maskGlowGeometry(); if (g){ const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({color: S.mkGlowCol, side: THREE.DoubleSide})); m.name = 'Glow (preview)'; baseGrp.add(m); } } return; }
   if (S.product === 'wall'){ mug.position.y = WL.bp; if (!wlData) return; const m1 = new THREE.Mesh(wlBackGeometry(), ringMat); m1.name = 'Back plate'; const m2 = new THREE.Mesh(wlPostGeometry(), ringMat); m2.name = 'LED post'; baseGrp.add(m1, m2); return; }
   if (S.product !== 'bulb') return;
   const P = bulbStockParts();
@@ -2857,7 +2923,7 @@ function setProduct0(prod){
   $('prodCard').setAttribute('aria-pressed', String(prod === 'card')); $('cardOpts').hidden = prod !== 'card';
   $('prodBlock').setAttribute('aria-pressed', String(prod === 'block')); $('blockOpts').hidden = prod !== 'block';
   const mk = prod === 'mask', wl = prod === 'wall', pr = prod === 'proj', sl = prod === 'shadow' || pr || wl || mk;
-  $('prodMask').setAttribute('aria-pressed', String(mk)); $('maskOpts').hidden = !mk;
+  $('prodMask').setAttribute('aria-pressed', String(mk)); $('maskOpts').hidden = !mk; $('maskExport').hidden = !mk;
   $('prodWall').setAttribute('aria-pressed', String(wl)); $('wallOpts').hidden = !wl; $('wallExport').hidden = !wl;
   $('prodShadow').setAttribute('aria-pressed', String(prod === 'shadow')); $('shadowOpts').hidden = prod !== 'shadow';
   $('prodProj').setAttribute('aria-pressed', String(pr)); $('projOpts').hidden = !pr;
@@ -2894,7 +2960,7 @@ $('prodMask').addEventListener('click', () => { if (S.product !== 'mask'){ setPr
 function setMaskStyle(v){ S.mkStyle = v; $('mkStyle').value = v; $('mkFullRow').hidden = v !== 'full'; }
 $('mkStyle').addEventListener('change', e => { setMaskStyle(e.target.value); rebuild(); setTimeout(resetView, 60); });
 [['mkEyes', 'mkEyes'], ['mkMouth', 'mkMouth']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.value; rebuild(); }));
-[['mkLogo', 'mkLogo'], ['mkLines', 'mkLines'], ['mkVents', 'mkVents'], ['mkGlow', 'mkGlow']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.checked; rebuild(); }));
+[['mkLogo', 'mkLogo'], ['mkLines', 'mkLines'], ['mkVents', 'mkVents'], ['mkGlow', 'mkGlow'], ['mkExplode', 'mkExplode']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.checked; rebuild(); }));
 $('mkGlowCol').addEventListener('input', e => { S.mkGlowCol = e.target.value; baseGrp.children.forEach(o => { if (o.name === 'Glow (preview)') o.material.color.set(S.mkGlowCol); }); });
 $('prodWall').addEventListener('click', () => { if (S.product !== 'wall'){ setProduct('wall'); setTimeout(resetView, 60); } });
 $('wlPic').addEventListener('change', e => {
@@ -2905,6 +2971,27 @@ $('wlPic').addEventListener('change', e => {
 $('wlPicClear').addEventListener('click', () => { wlPicCanvas = null; $('wlPicNote').textContent = 'Using the main logo.'; rebuild(); });
 $('wlPower').addEventListener('change', e => { S.wlPower = e.target.value; rebuild(); });
 $('wlFront').addEventListener('change', e => { S.wlFront = e.target.checked; rebuild(); });
+$('dlMaskKit').addEventListener('click', async () => {
+  busy(true); status('Building the mask parts…'); await new Promise(r => setTimeout(r, 30));
+  try {
+    const base = slug(), files = {}, P = mkPartGeos(), shell = mug.children.map(o => o.geometry);
+    files[base + '-mask-shell.stl'] = stlBinary(placed(shell, false), 'mask shell');
+    P.frames.forEach(([n, g]) => { files['mask-' + n.toLowerCase().replace(/ /g, '-') + '.stl'] = stlBinary(placed([g], false), n); });
+    P.diff.forEach(([n, g]) => { files['mask-' + n.toLowerCase().replace(/ /g, '-') + '-WHITE-or-CLEAR.stl'] = stlBinary(placed([g], false), n); });
+    const txt = ['LED MASK · PARTS KIT', '',
+      'Print: matte black PLA/PETG, 0.16-0.2 mm layers, 3 walls, 15-25% infill. Parts stand as exported; use tree supports touching the plate only.',
+      'Diffusers: white or clear PETG, 100% infill, thin is fine.', '',
+      'Assembly:',
+      '1. Glue the glow-line diffusers into their channels from the inside (the flange sits against the inner face).',
+      '2. Glue the logo diffuser inside, behind the logo.',
+      '3. Lay a 5 V USB LED strip (or EL wire) behind the diffusers; run the cable to a power bank in a pocket.',
+      S.mkStyle === 'half' ? '4. Fit the side frames over the shell sides: 2 mm pins (filament) + glue, or M2 x 8 screws, through the two holes each side.' : '4. Thread the strap through the slots at the sides.',
+      '5. 20-25 mm elastic strap through the slots; add thin foam padding inside for comfort. Sand edges that touch the face.'];
+    files['READ-ME-assembly.txt'] = new TextEncoder().encode(txt.join('\r\n'));
+    await deliver(base + '-led-mask-kit.zip', fflate.zipSync(files, {level: 6}), 'application/zip');
+  } catch (e) { status('Mask kit failed: ' + (e && e.message ? e.message : e)); }
+  busy(false);
+});
 $('dlWallBack').addEventListener('click', async () => {
   busy(true); status('Building the back plate…');
   try { const g = wlBackGeometry(); const [f] = placed([g], false); await deliver('wall-lamp-back-plate-STOCK-' + S.wlW + 'x' + S.wlD + (S.wlPower === 'usb' ? '-usbc' : '') + '.stl', stlBinary([f], 'wall lamp back plate (stock)'), 'model/stl'); g.dispose(); f.dispose(); }
