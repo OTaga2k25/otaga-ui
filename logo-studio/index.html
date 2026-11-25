@@ -607,6 +607,7 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
         <label class="check"><input type="checkbox" id="mkLines" checked> <span>Glow lines</span></label>
         <label class="check"><input type="checkbox" id="mkVents" checked> <span>Vents</span></label>
         <label class="check"><input type="checkbox" id="mkGlow" checked> <span>Show glow in the preview</span></label>
+        <label class="check"><input type="checkbox" id="mkOnePiece" checked> <span>One-piece print: side fins joined to the shell (single STL)</span></label>
         <label class="check"><input type="checkbox" id="mkExplode"> <span>Show the parts apart (exploded view)</span></label>
         <span class="note"><b>Parts:</b> main shell (custom logo) · side frames L/R (half mask; pin on with 2 mm pins or M2 screws, carry the strap slot) · glow-line diffusers L/R and a logo diffuser (print in white or clear PETG, glue inside). Download them all from Export → Mask parts kit. Add foam padding inside for comfort.</span>
         <span class="note"><b>Making it glow:</b> stick a thin white diffuser (tracing paper, frosted film or a 0.4 mm white print) inside over the cut-outs, then a 5 V USB LED strip or EL wire behind it, powered from a small power bank in a pocket. Thread a 20–25 mm elastic strap through the side slots.</span>
@@ -691,7 +692,7 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
       <div class="grp" id="maskExport" hidden>
         <h3>Mask parts kit</h3>
         <button class="btn primary" id="dlMaskKit">Download mask parts kit (.zip)<small>Main shell · side frames L/R · LED diffusers · assembly notes</small></button>
-        <span class="note">The STL / 3MF downloads above contain only the main shell.</span>
+        <span class="note">With "One-piece print" on, the STL / 3MF downloads above are the whole mask in one file. The kit adds the optional white/clear diffusers.</span>
       </div>
       <div class="grp" id="wallExport" hidden>
         <h3>Wall lamp parts (print once)</h3>
@@ -732,7 +733,7 @@ const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const S = {
-  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:26, mkLine:5.5, mkLogo:true, mkSideLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkExplode:false, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
+  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:26, mkLine:5.5, mkLogo:true, mkSideLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkExplode:false, mkOnePiece:true, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
   mode:'raised', logoW:52, angle:0, ly:44, both:false,
   depth:1.6, thr:0.5, invert:false, heightSrc:'layered', reliefColor:'full', smooth:2, hiDetail:false, logoColor:'#1d2c7a', removeBg:true, stickerW:0, nColors:5, text:'', textFont:"800|'Baloo 2'", textPos:'below', textSize:27, textColor:'#12939a'
 };
@@ -923,7 +924,7 @@ function mkShapes(){
       // cut-out pattern on the outer cheeks
       bothPoly([[63, 70], [80, 74], [84, 65], [66, 61]]); bothPoly([[63, 52], [77, 56], [83, 44], [69, 40]]); bothPoly([[60, 35], [73, 37], [75, 27], [62, 25]]);
     }
-    M.pins.forEach(([x, y]) => both([[x, y], [x, y + 0.01]], 2.3));   // pin holes for the side frames
+    if (!S.mkOnePiece) M.pins.forEach(([x, y]) => both([[x, y], [x, y + 0.01]], 2.3));   // pin holes for separate side frames
   } else {
     const e = S.mkEyes;
     if (e === 'x'){ both([[24, 110], [52, 140]], 7); both([[24, 140], [52, 110]], 7); }
@@ -1002,7 +1003,9 @@ function maskGeometries(){
   const place = (th, r, y) => [Math.sin(th) * r, y, Math.cos(th) * r];
   const g = smoothShell(D.F, D.Na, D.ys, (y, th) => mkRadius(th, y) + mkRaise(th, y), S.mkWall, place, (y, th) => mkRadius(th, y) - S.mkWall);
   g.translate(0, -D.ys[0], 0);
-  return [['Mask shell', g]];
+  const parts = [['Mask shell', g]];
+  if (S.mkOnePiece && MASKS[S.mkStyle].frame) mkPartGeos().frames.forEach(f => parts.push(f));
+  return parts;
 }
 function mkFieldFrom(vfun, x0, x1){
   // a smooth field on the mask grid from a signed function (mm, positive = solid), only for |X| in [x0, x1]
@@ -1026,12 +1029,12 @@ function mkPartGeos(){
     [1, -1].forEach(sd => {
       const mir = P => P.map(([x, y]) => [x * sd, y]);
       const SM = (S.mkLogo && S.mkSideLogo && Fr.logo && slMask()) ? softMask(slMask(), 1) : null;
-      const poly = mir(Fr.poly), holes = (SM ? Fr.holes.slice(1) : Fr.holes).map(mir), slot = mir(Fr.slot), pins = M.pins.map(([x, y]) => [x * sd, y]), rz = Fr.raise.map(([P, h]) => [mir(P), h]);
+      const poly = mir(Fr.poly), holes = (SM ? Fr.holes.slice(1) : Fr.holes).map(mir), slot = mir(Fr.slot), pins = S.mkOnePiece ? [] : M.pins.map(([x, y]) => [x * sd, y]), rz = Fr.raise.map(([P, h]) => [mir(P), h]);
       const xs = poly.map(p => p[0]), x0 = Math.min(...xs), x1 = Math.max(...xs);
       const F = mkFieldFrom((X, Y) => { let v = -sdPoly(poly, X, Y); holes.forEach(H => { v = Math.min(v, sdPoly(H, X, Y)); }); v = Math.min(v, capD(slot, X, Y) - 2.2); pins.forEach(([px, py]) => { v = Math.min(v, Math.hypot(X - px, Y - py) - 1.15); }); if (SM) v = Math.min(v, mkLogoV(SM, Fr.logo[0] * sd, Fr.logo[1], Fr.logo[2], X, Y)); return v; }, x0, x1);
       const fRaise = (th, y) => { const X = th * M.Rref, Y = y / k; let r = 0; for (const [P, h] of rz){ const d = sdPoly(P, X, Y); if (d < 0){ const t = Math.min(1, -d / 2.6); r = Math.max(r, h * t * t * (3 - 2 * t)); } } return r * k; };
       const wrap = th => ((th + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
-      const rin = (y, th) => mkShellOut(th, y) + 0.25 + Math.max(0, Math.abs(wrap(th)) * M.Rref - (Fr.flareFrom || 999)) * (Fr.flare || 0), rout = (y, th) => rin(y, th) + Fr.thick + fRaise(wrap(th), y);
+      const rin = (y, th) => mkShellOut(th, y) + (S.mkOnePiece ? -0.6 : 0.25) + Math.max(0, Math.abs(wrap(th)) * M.Rref - (Fr.flareFrom || 999)) * (Fr.flare || 0), rout = (y, th) => rin(y, th) + Fr.thick + fRaise(wrap(th), y);
       frames.push([sd > 0 ? 'Side frame R' : 'Side frame L', smoothShell(F, D.Na, D.ys, rout, Fr.thick, place, rin)]);
     });
   }
@@ -1350,7 +1353,7 @@ function buildStock(){
     if (mkData){
       const P = mkPartGeos(), ex = S.mkExplode, glowMat = new THREE.MeshBasicMaterial({color: S.mkGlowCol, side: THREE.DoubleSide});
       const shift = (m, g) => { if (!ex) return; g.computeBoundingBox(); const c = new THREE.Vector3(); g.boundingBox.getCenter(c); const d = new THREE.Vector3(c.x, 0, c.z).normalize(); m.position.copy(d.multiplyScalar(m.name.startsWith('Side') ? 36 : 16)); if (!m.name.startsWith('Side')) m.position.y += m.name.startsWith('Logo') ? 22 : 0; };
-      P.frames.forEach(([n, g]) => { const m = new THREE.Mesh(g, ringMat); m.name = n; shift(m, g); baseGrp.add(m); });
+      if (!S.mkOnePiece) P.frames.forEach(([n, g]) => { const m = new THREE.Mesh(g, ringMat); m.name = n; shift(m, g); baseGrp.add(m); });
       P.diff.forEach(([n, g]) => { const m = new THREE.Mesh(g, S.mkGlow ? glowMat : new THREE.MeshPhysicalMaterial({color: '#f4f2ff', roughness: 0.6, transmission: 0.3})); m.name = n; shift(m, g); baseGrp.add(m); });
       if (ex) return;
     }
@@ -2968,7 +2971,7 @@ $('prodMask').addEventListener('click', () => { if (S.product !== 'mask'){ setPr
 function setMaskStyle(v){ S.mkStyle = v; $('mkStyle').value = v; $('mkFullRow').hidden = v !== 'full'; }
 $('mkStyle').addEventListener('change', e => { setMaskStyle(e.target.value); rebuild(); setTimeout(resetView, 60); });
 [['mkEyes', 'mkEyes'], ['mkMouth', 'mkMouth']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.value; rebuild(); }));
-[['mkLogo', 'mkLogo'], ['mkSideLogo', 'mkSideLogo'], ['mkLines', 'mkLines'], ['mkVents', 'mkVents'], ['mkGlow', 'mkGlow'], ['mkExplode', 'mkExplode']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.checked; rebuild(); }));
+[['mkLogo', 'mkLogo'], ['mkSideLogo', 'mkSideLogo'], ['mkLines', 'mkLines'], ['mkVents', 'mkVents'], ['mkGlow', 'mkGlow'], ['mkExplode', 'mkExplode'], ['mkOnePiece', 'mkOnePiece']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.checked; rebuild(); }));
 $('mkGlowCol').addEventListener('input', e => { S.mkGlowCol = e.target.value; baseGrp.children.forEach(o => { if (o.name === 'Glow (preview)') o.material.color.set(S.mkGlowCol); }); });
 $('prodWall').addEventListener('click', () => { if (S.product !== 'wall'){ setProduct('wall'); setTimeout(resetView, 60); } });
 $('wlPic').addEventListener('change', e => {
@@ -2984,7 +2987,7 @@ $('dlMaskKit').addEventListener('click', async () => {
   try {
     const base = slug(), files = {}, P = mkPartGeos(), shell = mug.children.map(o => o.geometry);
     files[base + '-mask-shell.stl'] = stlBinary(placed(shell, false), 'mask shell');
-    P.frames.forEach(([n, g]) => { files['mask-' + n.toLowerCase().replace(/ /g, '-') + '.stl'] = stlBinary(placed([g], false), n); });
+    if (!S.mkOnePiece) P.frames.forEach(([n, g]) => { files['mask-' + n.toLowerCase().replace(/ /g, '-') + '.stl'] = stlBinary(placed([g], false), n); });
     P.diff.forEach(([n, g]) => { files['mask-' + n.toLowerCase().replace(/ /g, '-') + '-WHITE-or-CLEAR.stl'] = stlBinary(placed([g], false), n); });
     const txt = ['LED MASK · PARTS KIT', '',
       'Print: matte black PLA/PETG, 0.16-0.2 mm layers, 3 walls, 15-25% infill. Parts stand as exported; use tree supports touching the plate only.',
@@ -2993,7 +2996,7 @@ $('dlMaskKit').addEventListener('click', async () => {
       '1. Glue the glow-line diffusers into their channels from the inside (the flange sits against the inner face).',
       '2. Glue the logo diffuser inside, behind the logo.',
       '3. Lay a 5 V USB LED strip (or EL wire) behind the diffusers; run the cable to a power bank in a pocket.',
-      S.mkStyle === 'half' ? '4. Fit the side frames over the shell sides: 2 mm pins (filament) + glue, or M2 x 8 screws, through the two holes each side.' : '4. Thread the strap through the slots at the sides.',
+      S.mkStyle === 'half' && S.mkOnePiece ? '4. The side fins are already part of the shell (one-piece print).' : S.mkStyle === 'half' ? '4. Fit the side frames over the shell sides: 2 mm pins (filament) + glue, or M2 x 8 screws, through the two holes each side.' : '4. Thread the strap through the slots at the sides.',
       '5. 20-25 mm elastic strap through the slots; add thin foam padding inside for comfort. Sand edges that touch the face.'];
     files['READ-ME-assembly.txt'] = new TextEncoder().encode(txt.join('\r\n'));
     await deliver(base + '-led-mask-kit.zip', fflate.zipSync(files, {level: 6}), 'application/zip');
