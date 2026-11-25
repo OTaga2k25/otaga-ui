@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DJ Pulse Mask</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE occasion, a client concept pitch
+   IDEA a stage-lit product sheet from a DJ's merch drop
+   PICTURE the full design reference sheet, edge to edge
+   COLOUR night #0a0a10 ground in both themes, ink #f2f1f7, purple #b06bff, cyan #38e1ff accent
+   TYPE Inter 800 display + Inter text
+   LAYOUT title over the sheet full width; below, three short columns (what it is, logo, next step); stacks on phone */
+:root{color-scheme:dark;--bg:#0a0a10;--ink:#f2f1f7;--dim:#a9abbd;--pur:#b06bff;--line:#ffffff1f}
+*{box-sizing:border-box;min-width:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip;margin:0}
+.band{padding-block:clamp(24px,4vw,56px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto}
+.top{margin-top:calc(-1*env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 2.4rem);background:radial-gradient(120% 90% at 30% 0%,#22183d,#0a0a10 70%)}
+h1{font-weight:800;font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.02em;margin:0 0 10px}
+h1 span{color:var(--pur)}
+.lead{color:var(--dim);font-size:17px;max-width:62ch;margin:0 0 26px}
+.sheet{display:block;width:100%;height:auto;border-radius:18px;border:1px solid var(--line);box-shadow:0 0 0 1px #00000040}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.cols h2{font-size:20px;margin:0 0 8px;color:var(--pur)}
+.cols p,.cols li{color:#d6d7e2;margin:0 0 8px}
+.cols ul{margin:0;padding-left:18px}
+.foot{color:var(--dim);font-size:14px;border-top:1px solid var(--line)}
+@media(max-width:760px){.cols{grid-template-columns:minmax(0,1fr)}}
+</style></head><body>
+<header class="band top"><div class="wrap">
+<h1>DJ Pulse <span>LED mask</span></h1>
+<p class="lead">An original light-up mask built around the artist's own logo, which glows from the centre badge. Shown here as a concept before printing.</p>
+<img class="sheet" src="dj-mask-reference.jpg" alt="DJ Pulse LED mask design reference: front view with glowing hex logo badge, equaliser vents and sound-wave lines, side view, colour options in purple, cyan and red, and the mask with lights off">
+</div></header>
+<section class="band"><div class="wrap cols">
+<div><h2>The design</h2><ul><li>Hex badge in the middle for the artist's logo, cut through so it glows</li><li>Equaliser-bar vents on both cheeks</li><li>Sound-wave glow along the jaw and a chin slit</li><li>Headphone-cup side fins with glowing speaker rings</li></ul></div>
+<div><h2>Size and build</h2><p>About 17 × 10.5 × 7 cm, printed as one piece in matte black. A 5 V USB LED strip behind a white diffuser lights it, powered by a small power bank. An elastic strap goes through the fins.</p></div>
+<div><h2>Next step</h2><p>Send the logo as a large PNG or SVG and pick a glow colour (purple, cyan or red). We'll show the mask with the real logo, then print a first sample to check the fit.</p></div>
+</div></section>
+<footer class="band foot"><div class="wrap">Concept by OTAGA · made with Logo Studio. The badge shows a placeholder until the artist's logo is added.</div></footer>
+
+</body></html>
