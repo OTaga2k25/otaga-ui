@@ -599,10 +599,11 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
           <div class="field"><label for="mkWall">Shell thickness</label><output id="mkWallOut"></output><input type="range" id="mkWall" min="1.6" max="3" step="0.1" value="2"></div>
         </div>
         <div class="row2">
-          <div class="field"><label for="mkLogoW">Logo width</label><output id="mkLogoWOut"></output><input type="range" id="mkLogoW" min="14" max="60" step="1" value="22"></div>
-          <div class="field"><label for="mkLine">Glow line width</label><output id="mkLineOut"></output><input type="range" id="mkLine" min="2" max="6" step="0.5" value="3.5"></div>
+          <div class="field"><label for="mkLogoW">Logo width</label><output id="mkLogoWOut"></output><input type="range" id="mkLogoW" min="14" max="60" step="1" value="26"></div>
+          <div class="field"><label for="mkLine">Glow line width</label><output id="mkLineOut"></output><input type="range" id="mkLine" min="2" max="7" step="0.5" value="5.5"></div>
         </div>
         <label class="check"><input type="checkbox" id="mkLogo" checked> <span>Cut the logo through (glows from behind)</span></label>
+        <label class="check"><input type="checkbox" id="mkSideLogo" checked> <span>Logo on the side fins too</span></label>
         <label class="check"><input type="checkbox" id="mkLines" checked> <span>Glow lines</span></label>
         <label class="check"><input type="checkbox" id="mkVents" checked> <span>Vents</span></label>
         <label class="check"><input type="checkbox" id="mkGlow" checked> <span>Show glow in the preview</span></label>
@@ -731,7 +732,7 @@ const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const S = {
-  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:22, mkLine:3.5, mkLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkExplode:false, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
+  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:26, mkLine:5.5, mkLogo:true, mkSideLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkExplode:false, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
   mode:'raised', logoW:52, angle:0, ly:44, both:false,
   depth:1.6, thr:0.5, invert:false, heightSrc:'layered', reliefColor:'full', smooth:2, hiDetail:false, logoColor:'#1d2c7a', removeBg:true, stickerW:0, nColors:5, text:'', textFont:"800|'Baloo 2'", textPos:'below', textSize:27, textColor:'#12939a'
 };
@@ -880,19 +881,19 @@ function bodyGeometry(){
 // (X = th * 90 mm, Y = height), turned into a smooth field and traced with the same marching squares as the lamps.
 let mkData = null;
 const MASKS = {
-  half: {H: 90, Rref: 90,
-    // right half of the outline, chin centre -> nose bridge (mirrored)
-    // pointed chin, horns, side fins joined to the cheeks at top and bottom
-    outline: [[0, 0], [6, 0], [24, 5], [46, 10], [70, 18], [86, 24], [91, 40], [91, 60], [84, 70], [74, 74], [64, 90], [52, 80], [30, 64], [16, 77], [0, 87]],
-    // raised plates [polygon, height mm] (right half, mirrored): nose plate, cheek blades, side fins, outer cheeks
-    raise: [[[[0, 87], [16, 77], [13, 57], [0, 54]], 3], [[[30, 64], [22, 40], [8, 8], [14, 6], [34, 36], [48, 62], [64, 90], [52, 80]], 4.2],
-            [[[48, 62], [80, 70], [84, 20], [40, 14]], 1.4]],
-    pins: [[87, 33], [87, 55]],
-    // separate side frame (right; the left one is mirrored): sits on the shell's side and carries the strap slot
-    frame: {poly: [[82, 18], [96, 10], [107, 22], [109, 58], [101, 75], [86, 71], [82, 64]], raise: [[[[88, 22], [100, 18], [104, 30], [104, 52], [98, 66], [88, 62]], 1.6]],
-            holes: [[[90, 52], [97, 55], [98, 45], [91, 43]], [[90, 33], [97, 35], [97, 25], [90, 23]]], slot: [[103.5, 30], [103.5, 52]], thick: 3},
+  half: {H: 106, Rref: 90,
+    // right half of the outline, chin point -> nose bridge (mirrored): pointed chin, bold curved top edge, tall horns
+    outline: [[0, 0], [3, 0], [23, 11], [50, 16], [76, 21], [92, 27], [96, 44], [96, 66], [90, 78], [82, 84], [71, 105], [61, 95], [52, 85], [42, 76], [31, 74], [21, 80], [10, 89], [0, 95]],
+    // raised plates [polygon, height mm]: nose plate, cheek blades, outer cheeks (gives the deep, protruding look)
+    raise: [[[[0, 97], [21, 85], [18, 61], [0, 56]], 4.5], [[[33, 74], [23, 42], [7, 7], [14, 4], [37, 38], [52, 68], [72, 105], [59, 91]], 6],
+            [[[52, 68], [86, 76], [92, 25], [44, 17]], 2.4]],
+    pins: [[91.5, 47], [91.5, 64]],
+    // separate side frame (right; left is mirrored): bigger, longer fin that flares out, cut-out pattern, strap slot, side logo
+    frame: {poly: [[87, 15], [103, 2], [116, 17], [119, 68], [110, 93], [93, 87], [87, 76]], raise: [[[[94, 19], [107, 10], [113, 23], [114, 64], [106, 83], [94, 77]], 1.8]],
+            holes: [[[97, 74], [103, 77], [105, 68], [99, 66]], [[97, 55], [104, 58], [105, 48], [98, 45]], [[97, 34], [103, 36], [104, 24], [97, 22]]],
+            slot: [[111, 34], [111, 58]], thick: 3, flareFrom: 95, flare: 0.85, logo: [101, 72, 12]},
     ctrlA: [0, 12, 24, 36, 48, 60, 72], ctrlR: [97, 95, 90, 84, 78, 73, 70],
-    logo: [0, 71, 1, 0.62], strap: null},
+    logo: [0, 76, 1, 0.62], strap: null},
   full: {H: 215, Rref: 90,
     outline: [[0, 0], [10, 0], [26, 4], [62, 14], [96, 36], [116, 72], [124, 118], [122, 156], [108, 186], [80, 206], [42, 214], [0, 216]],
     ctrlA: [0, 12, 24, 36, 48, 60, 72, 84], ctrlR: [100, 98, 93, 87, 81, 76, 72, 70],
@@ -914,10 +915,13 @@ function mkShapes(){
   const both = (pts, wd) => { cuts.push([pts, wd]); cuts.push([pts.map(([x, y]) => [-x, y]), wd]); };
   const bothPoly = P => { cuts.push([P, -1]); cuts.push([P.map(([x, y]) => [-x, y]), -1]); };
   if (S.mkStyle === 'half'){
-    if (S.mkLines) both([[50, 70], [44, 52], [48, 46], [38, 20]], w);
+    if (S.mkLines) both([[55, 81], [47, 58], [53, 51], [40, 19]], w);
     if (S.mkVents){
-      for (let k = 0; k < 4; k++){ const y = 49 - 7 * k; both([[5.5, y], [19 - (49 - y) * 0.17, y - 1.2]], 3.2); }
-      bothPoly([[60, 60], [72, 62], [76, 48], [64, 46]]); bothPoly([[58, 38], [74, 40], [72, 26], [56, 24]]);
+      // big vents between the nose ridge and the blades, following the blade's slope
+      const bladeIn = y => y <= 42 ? 7 + (y - 7) * 16 / 35 : 23 + (y - 42) * 10 / 32;
+      for (let k = 0; k < 5; k++){ const y = 52 - 7.5 * k, x1 = Math.min(bladeIn(y), bladeIn(y - 3)) - 3.4; if (x1 - 6.5 >= 5) both([[6.5, y], [x1, y - 3]], 4.6); }
+      // cut-out pattern on the outer cheeks
+      bothPoly([[63, 70], [80, 74], [84, 65], [66, 61]]); bothPoly([[63, 52], [77, 56], [83, 44], [69, 40]]); bothPoly([[60, 35], [73, 37], [75, 27], [62, 25]]);
     }
     M.pins.forEach(([x, y]) => both([[x, y], [x, y + 0.01]], 2.3));   // pin holes for the side frames
   } else {
@@ -943,8 +947,8 @@ function mkRadius(th, y){
   let base; if (a >= A[A.length - 1]) base = R[R.length - 1] - (a - A[A.length - 1]) * 0.25; else { let i = 0; while (A[i + 1] < a) i++; const t = (a - A[i]) / (A[i + 1] - A[i]); base = R[i] + (R[i + 1] - R[i]) * t; }
   const yy = y / k, H = M.H; let sc, ridge;
   if (S.mkStyle === 'half'){
-    const ys = [0, 18, 40, 64, 90], ss = [0.84, 0.92, 0.98, 1.0, 0.97]; sc = pl(ys, ss, yy);
-    ridge = 6 * Math.max(0, 1 - a / 14) * pl([0, 20, 60, 90], [0.6, 1, 1, 0.5], yy);
+    const ys = [0, 20, 44, 70, 106], ss = [0.84, 0.92, 0.98, 1.0, 0.97]; sc = pl(ys, ss, yy);
+    ridge = 9 * Math.max(0, 1 - a / 14) * pl([0, 22, 66, 106], [0.7, 1, 1, 0.5], yy);
   } else {
     const ys = [0, 30, 70, 110, 150, 185, 216], ss = [0.8, 0.88, 0.96, 1.0, 1.0, 0.93, 0.8]; sc = pl(ys, ss, yy);
     ridge = 9 * Math.max(0, 1 - a / 13) * pl([0, 70, 90, 130, 150, 216], [0.2, 0.2, 1, 1, 0.2, 0.1], yy);
@@ -988,7 +992,8 @@ function mkCompute(){
   thickenField(F, Na, ys, cw, S.minFeat);
   const bars = fieldFix(F, Na, NN, Math.max(3, Math.round(1.6 / cw)), 12);
   let x0 = Infinity, x1 = -Infinity; for (const [x] of out){ x0 = Math.min(x0, x); x1 = Math.max(x1, x); }
-  const thE = x1 / M.Rref, wid = 2 * mkRadius(thE, H * 0.5) * Math.sin(Math.min(Math.PI / 2, thE));
+  let thE = x1 / M.Rref, wid = 2 * mkRadius(thE, H * 0.5) * Math.sin(Math.min(Math.PI / 2, thE));
+  if (M.frame){ const fx = Math.max(...M.frame.poly.map(p => p[0])), tf = fx / M.Rref, rf = mkRadius(tf, H * 0.5) + 3.3 + Math.max(0, fx - M.frame.flareFrom) * M.frame.flare; wid = 2 * rf * Math.sin(Math.min(Math.PI / 2, tf)); }
   mkData = {Na, NN, ys, F, H, bars, wid, k};
   return mkData;
 }
@@ -1008,6 +1013,7 @@ function mkFieldFrom(vfun, x0, x1){
   }
   return F;
 }
+function mkLogoV(SM, cx, cy, w, X, Y){ const h = w * SM.h / SM.w, u = (X - cx + w / 2) / w, v = (cy + h / 2 - Y) / h; if (u < 0 || u > 1 || v < 0 || v > 1) return Infinity; return (0.5 - bilinMask(SM, u * SM.w, v * SM.h)) * (w / SM.w) * 2.2; }
 const capD = (pts, X, Y) => { let d = Infinity; for (let q = 0; q + 1 < pts.length; q++) d = Math.min(d, sdSeg(X, Y, pts[q][0], pts[q][1], pts[q + 1][0], pts[q + 1][1])); return d; };
 function mkShellOut(th, y){ return mkRadius(th, y) + mkRaise(th, y); }
 function mkPartGeos(){
@@ -1019,12 +1025,13 @@ function mkPartGeos(){
     const Fr = M.frame;
     [1, -1].forEach(sd => {
       const mir = P => P.map(([x, y]) => [x * sd, y]);
-      const poly = mir(Fr.poly), holes = Fr.holes.map(mir), slot = mir(Fr.slot), pins = M.pins.map(([x, y]) => [x * sd, y]), rz = Fr.raise.map(([P, h]) => [mir(P), h]);
+      const SM = (S.mkLogo && S.mkSideLogo && Fr.logo && slMask()) ? softMask(slMask(), 1) : null;
+      const poly = mir(Fr.poly), holes = (SM ? Fr.holes.slice(1) : Fr.holes).map(mir), slot = mir(Fr.slot), pins = M.pins.map(([x, y]) => [x * sd, y]), rz = Fr.raise.map(([P, h]) => [mir(P), h]);
       const xs = poly.map(p => p[0]), x0 = Math.min(...xs), x1 = Math.max(...xs);
-      const F = mkFieldFrom((X, Y) => { let v = -sdPoly(poly, X, Y); holes.forEach(H => { v = Math.min(v, sdPoly(H, X, Y)); }); v = Math.min(v, capD(slot, X, Y) - 2.2); pins.forEach(([px, py]) => { v = Math.min(v, Math.hypot(X - px, Y - py) - 1.15); }); return v; }, x0, x1);
+      const F = mkFieldFrom((X, Y) => { let v = -sdPoly(poly, X, Y); holes.forEach(H => { v = Math.min(v, sdPoly(H, X, Y)); }); v = Math.min(v, capD(slot, X, Y) - 2.2); pins.forEach(([px, py]) => { v = Math.min(v, Math.hypot(X - px, Y - py) - 1.15); }); if (SM) v = Math.min(v, mkLogoV(SM, Fr.logo[0] * sd, Fr.logo[1], Fr.logo[2], X, Y)); return v; }, x0, x1);
       const fRaise = (th, y) => { const X = th * M.Rref, Y = y / k; let r = 0; for (const [P, h] of rz){ const d = sdPoly(P, X, Y); if (d < 0){ const t = Math.min(1, -d / 2.6); r = Math.max(r, h * t * t * (3 - 2 * t)); } } return r * k; };
       const wrap = th => ((th + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
-      const rin = (y, th) => mkShellOut(th, y) + 0.25, rout = (y, th) => rin(y, th) + Fr.thick + fRaise(wrap(th), y);
+      const rin = (y, th) => mkShellOut(th, y) + 0.25 + Math.max(0, Math.abs(wrap(th)) * M.Rref - (Fr.flareFrom || 999)) * (Fr.flare || 0), rout = (y, th) => rin(y, th) + Fr.thick + fRaise(wrap(th), y);
       frames.push([sd > 0 ? 'Side frame R' : 'Side frame L', smoothShell(F, D.Na, D.ys, rout, Fr.thick, place, rin)]);
     });
   }
@@ -1294,7 +1301,7 @@ function domeGeometry(){
   return mergeGeos([shell, th]);
 }
 function mergeGeos(list){
-  const pos = []; list.forEach(g => { const n = g.index ? g.toNonIndexed() : g; pos.push(...n.attributes.position.array); });
+  const pos = []; list.forEach(g => { const n = g.index ? g.toNonIndexed() : g, arr = n.attributes.position.array; for (let i = 0; i < arr.length; i++) pos.push(arr[i]); });
   const out = new THREE.BufferGeometry(); out.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); out.computeVertexNormals(); return out;
 }
 function setMount(v){
@@ -1472,13 +1479,14 @@ function softMask(M, rad){
 function thickenField(F, Na, ys, cw, minW){
   // make the printed lamp strong: solid parts narrower than minW (around) are widened, solid slivers
   // shorter than 0.8 mm (up) are made 0.8 mm tall, and slivers under 0.36 mm (one or two layers) are removed
-  const NN = ys.length, solid = q => F[q] >= 0.5, minH = 0.8, dropH = 0.36, wc = Math.max(1, Math.ceil(minW / cw));
+  const NN = ys.length, minH = 0.8, dropH = 0.36, wc = Math.max(1, Math.ceil(minW / cw)); let G = F; const solid = q => G[q] >= 0.5;
   for (let j = 2; j < NN; j++){
     let start = -1; const runs = [];
     for (let k = 0; k <= Na; k++){ const q = (k % Na) * NN + j, sv = k < Na && solid(q); if (sv && start < 0) start = k; if (!sv && start >= 0){ runs.push([start, k - 1]); start = -1; } }
     if (runs.length === 1 && runs[0][1] - runs[0][0] + 1 >= Na) continue;
     runs.forEach(([a, b]) => { const n = b - a + 1; if (n >= wc) return; const add = Math.ceil((wc - n) / 2); for (let k = a - add; k <= b + add; k++) F[((k % Na) + Na) % Na * NN + j] = 1; });
   }
+  G = F.slice();   // read the pattern as it was, so a thickened sliver does not grow into its neighbours
   for (let i = 0; i < Na; i++){
     const o = i * NN; let j = 1;
     while (j < NN){
@@ -2742,7 +2750,7 @@ const PRESETS = {
     ['tumbler', 'Tumbler', 'no handle', {mh:125, md:80, mt:12, mw:4, mb:6, handle:false}]
   ],
   mask: [
-    ['mkHalf', 'Half mask', 'angular · glow lines', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#1c1c22', mkStyle:'half', mkScale:100, mkWall:2, mkLogoW:22, mkLine:3.5, mkGlowCol:'#8a3cff', texture:'smooth'}],
+    ['mkHalf', 'Half mask', 'angular · glow lines', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#1c1c22', mkStyle:'half', mkScale:100, mkWall:2, mkLogoW:26, mkLine:5.5, mkGlowCol:'#8a3cff', texture:'smooth'}],
     ['mkSmile', 'Full face', 'X eyes · stitched smile', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#141418', mkStyle:'full', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:44, mkLine:3.5, mkGlowCol:'#4f7dff', texture:'smooth'}],
     ['mkLogoEyes', 'Logo eyes', 'your logo in both eyes', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#141418', mkStyle:'full', mkEyes:'logo', mkMouth:'grin', mkScale:100, mkWall:2, mkLogoW:40, mkLine:3, mkGlowCol:'#ff3c8a', texture:'smooth'}]
   ],
@@ -2960,7 +2968,7 @@ $('prodMask').addEventListener('click', () => { if (S.product !== 'mask'){ setPr
 function setMaskStyle(v){ S.mkStyle = v; $('mkStyle').value = v; $('mkFullRow').hidden = v !== 'full'; }
 $('mkStyle').addEventListener('change', e => { setMaskStyle(e.target.value); rebuild(); setTimeout(resetView, 60); });
 [['mkEyes', 'mkEyes'], ['mkMouth', 'mkMouth']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.value; rebuild(); }));
-[['mkLogo', 'mkLogo'], ['mkLines', 'mkLines'], ['mkVents', 'mkVents'], ['mkGlow', 'mkGlow'], ['mkExplode', 'mkExplode']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.checked; rebuild(); }));
+[['mkLogo', 'mkLogo'], ['mkSideLogo', 'mkSideLogo'], ['mkLines', 'mkLines'], ['mkVents', 'mkVents'], ['mkGlow', 'mkGlow'], ['mkExplode', 'mkExplode']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.checked; rebuild(); }));
 $('mkGlowCol').addEventListener('input', e => { S.mkGlowCol = e.target.value; baseGrp.children.forEach(o => { if (o.name === 'Glow (preview)') o.material.color.set(S.mkGlowCol); }); });
 $('prodWall').addEventListener('click', () => { if (S.product !== 'wall'){ setProduct('wall'); setTimeout(resetView, 60); } });
 $('wlPic').addEventListener('change', e => {
