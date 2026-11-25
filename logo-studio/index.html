@@ -599,7 +599,7 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
           <div class="field"><label for="mkWall">Shell thickness</label><output id="mkWallOut"></output><input type="range" id="mkWall" min="1.6" max="3" step="0.1" value="2"></div>
         </div>
         <div class="row2">
-          <div class="field"><label for="mkLogoW">Logo width</label><output id="mkLogoWOut"></output><input type="range" id="mkLogoW" min="20" max="60" step="1" value="34"></div>
+          <div class="field"><label for="mkLogoW">Logo width</label><output id="mkLogoWOut"></output><input type="range" id="mkLogoW" min="14" max="60" step="1" value="22"></div>
           <div class="field"><label for="mkLine">Glow line width</label><output id="mkLineOut"></output><input type="range" id="mkLine" min="2" max="6" step="0.5" value="3.5"></div>
         </div>
         <label class="check"><input type="checkbox" id="mkLogo" checked> <span>Cut the logo through (glows from behind)</span></label>
@@ -724,7 +724,7 @@ const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const S = {
-  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:34, mkLine:3.5, mkLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
+  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:22, mkLine:3.5, mkLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
   mode:'raised', logoW:52, angle:0, ly:44, both:false,
   depth:1.6, thr:0.5, invert:false, heightSrc:'layered', reliefColor:'full', smooth:2, hiDetail:false, logoColor:'#1d2c7a', removeBg:true, stickerW:0, nColors:5, text:'', textFont:"800|'Baloo 2'", textPos:'below', textSize:27, textColor:'#12939a'
 };
@@ -875,9 +875,13 @@ let mkData = null;
 const MASKS = {
   half: {H: 90, Rref: 90,
     // right half of the outline, chin centre -> nose bridge (mirrored)
-    outline: [[0, 0], [9, 0], [18, 3], [44, 8], [66, 15], [84, 30], [92, 48], [90, 66], [84, 82], [72, 88], [58, 74], [30, 64], [14, 82], [0, 89]],
+    // pointed chin, horns, side fins joined to the cheeks at top and bottom
+    outline: [[0, 0], [6, 0], [24, 5], [46, 10], [70, 18], [84, 16], [96, 12], [104, 24], [106, 58], [100, 72], [86, 66], [80, 70], [74, 74], [64, 90], [52, 80], [30, 64], [16, 77], [0, 87]],
+    // raised plates [polygon, height mm] (right half, mirrored): nose plate, cheek blades, side fins, outer cheeks
+    raise: [[[[0, 87], [16, 77], [13, 57], [0, 54]], 3], [[[30, 64], [22, 40], [8, 8], [14, 6], [34, 36], [48, 62], [64, 90], [52, 80]], 4.2],
+            [[[88, 18], [96, 12], [104, 24], [106, 58], [100, 72], [88, 66]], 2.6], [[[48, 62], [80, 70], [84, 20], [40, 14]], 1.4]],
     ctrlA: [0, 12, 24, 36, 48, 60, 72], ctrlR: [97, 95, 90, 84, 78, 73, 70],
-    logo: [0, 70, 1, 0.62], strap: [80, 40, 62]},
+    logo: [0, 71, 1, 0.62], strap: [98.5, 30, 52]},
   full: {H: 215, Rref: 90,
     outline: [[0, 0], [10, 0], [26, 4], [62, 14], [96, 36], [116, 72], [124, 118], [122, 156], [108, 186], [80, 206], [42, 214], [0, 216]],
     ctrlA: [0, 12, 24, 36, 48, 60, 72, 84], ctrlR: [100, 98, 93, 87, 81, 76, 72, 70],
@@ -897,9 +901,14 @@ function mkShapes(){
   // cut-outs as capsule polylines [points, width] in mask mm (right side; mirrored unless centre)
   const M = MASKS[S.mkStyle], w = S.mkLine, cuts = [];
   const both = (pts, wd) => { cuts.push([pts, wd]); cuts.push([pts.map(([x, y]) => [-x, y]), wd]); };
+  const bothPoly = P => { cuts.push([P, -1]); cuts.push([P.map(([x, y]) => [-x, y]), -1]); };
   if (S.mkStyle === 'half'){
-    if (S.mkLines) both([[38, 80], [50, 60], [42, 48], [60, 22]], w);
-    if (S.mkVents){ for (let k = 0; k < 4; k++) both([[15, 47 - 7.5 * k], [31, 52 - 7.5 * k]], 3.4); both([[66, 44], [80, 50]], 3.4); both([[66, 35], [80, 41]], 3.4); }
+    if (S.mkLines) both([[50, 70], [44, 52], [48, 46], [38, 20]], w);
+    if (S.mkVents){
+      for (let k = 0; k < 4; k++){ const y = 49 - 7 * k; both([[5.5, y], [19 - (49 - y) * 0.17, y - 1.2]], 3.2); }
+      bothPoly([[60, 60], [72, 62], [76, 48], [64, 46]]); bothPoly([[58, 38], [74, 40], [72, 26], [56, 24]]);
+    }
+    both([[86.5, 24], [87.5, 60]], 2.4);          // gap that makes the side fin look separate (joined top and bottom)
   } else {
     const e = S.mkEyes;
     if (e === 'x'){ both([[24, 110], [52, 140]], 7); both([[24, 140], [52, 110]], 7); }
@@ -931,6 +940,13 @@ function mkRadius(th, y){
   }
   return (base * sc + ridge) * k;
 }
+function mkRaise(th, y){
+  const M = MASKS[S.mkStyle]; if (!M.raise) return 0;
+  th = ((th + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+  const k = S.mkScale / 100, X = Math.abs(th) * M.Rref, Y = y / k; let r = 0;
+  for (const [P, h] of M.raise){ const d = sdPoly(P, X, Y); if (d < 0){ const t = Math.min(1, -d / 2.6); r = Math.max(r, h * t * t * (3 - 2 * t)); } }
+  return r * k;
+}
 function pl(xs, vs, x){ if (x <= xs[0]) return vs[0]; for (let i = 0; i + 1 < xs.length; i++) if (x <= xs[i + 1]){ const t = (x - xs[i]) / (xs[i + 1] - xs[i]); return vs[i] + (vs[i + 1] - vs[i]) * t; } return vs[vs.length - 1]; }
 function mkCompute(){
   const M = MASKS[S.mkStyle], k = S.mkScale / 100, H = M.H * k, cell = S.mkStyle === 'half' ? 0.45 : 0.55;
@@ -948,7 +964,7 @@ function mkCompute(){
     for (let j = 0; j < NN; j++){
       const Y = ys[j] / k; let v = -sdPoly(out, X, Y);
       if (v < -3){ F[i * NN + j] = 0; continue; }
-      for (const [pts, wd] of cuts){ let d = Infinity; for (let q = 0; q + 1 < pts.length; q++) d = Math.min(d, sdSeg(X, Y, pts[q][0], pts[q][1], pts[q + 1][0], pts[q + 1][1])); v = Math.min(v, d - wd / 2); }
+      for (const [pts, wd] of cuts){ if (wd < 0){ v = Math.min(v, sdPoly(pts, X, Y)); continue; } let d = Infinity; for (let q = 0; q + 1 < pts.length; q++) d = Math.min(d, sdSeg(X, Y, pts[q][0], pts[q][1], pts[q + 1][0], pts[q + 1][1])); v = Math.min(v, d - wd / 2); }
       if (SM){
         if (S.mkStyle === 'full') v = Math.min(v, logoAt(lx, ly, lw, X, Y));
         else v = Math.min(v, logoAt(lx, ly, lw, X, Y));
@@ -968,7 +984,7 @@ function mkCompute(){
 function maskGeometries(){
   const D = mkCompute(); if (!D) return [];
   const place = (th, r, y) => [Math.sin(th) * r, y, Math.cos(th) * r];
-  const g = smoothShell(D.F, D.Na, D.ys, (y, th) => mkRadius(th, y), S.mkWall, place, (y, th) => mkRadius(th, y) - S.mkWall);
+  const g = smoothShell(D.F, D.Na, D.ys, (y, th) => mkRadius(th, y) + mkRaise(th, y), S.mkWall, place, (y, th) => mkRadius(th, y) - S.mkWall);
   g.translate(0, -D.ys[0], 0);
   return [['Mask shell', g]];
 }
@@ -2660,7 +2676,7 @@ const PRESETS = {
     ['tumbler', 'Tumbler', 'no handle', {mh:125, md:80, mt:12, mw:4, mb:6, handle:false}]
   ],
   mask: [
-    ['mkHalf', 'Half mask', 'angular · glow lines', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#1c1c22', mkStyle:'half', mkScale:100, mkWall:2, mkLogoW:34, mkLine:3.5, mkGlowCol:'#8a3cff', texture:'smooth'}],
+    ['mkHalf', 'Half mask', 'angular · glow lines', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#1c1c22', mkStyle:'half', mkScale:100, mkWall:2, mkLogoW:22, mkLine:3.5, mkGlowCol:'#8a3cff', texture:'smooth'}],
     ['mkSmile', 'Full face', 'X eyes · stitched smile', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#141418', mkStyle:'full', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:44, mkLine:3.5, mkGlowCol:'#4f7dff', texture:'smooth'}],
     ['mkLogoEyes', 'Logo eyes', 'your logo in both eyes', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#141418', mkStyle:'full', mkEyes:'logo', mkMouth:'grin', mkScale:100, mkWall:2, mkLogoW:40, mkLine:3, mkGlowCol:'#ff3c8a', texture:'smooth'}]
   ],
