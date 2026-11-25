@@ -384,6 +384,7 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
           <button id="prodProj" aria-pressed="false">Projector lamp<small>Projects your picture on a wall</small></button>
           <button id="prodBulb" aria-pressed="false">Lamp base<small>Holds a bulb socket</small></button>
           <button id="prodWall" aria-pressed="false">Wall shadow lamp<small>Hangs on a wall, casts a big shadow</small></button>
+          <button id="prodMask" aria-pressed="false">LED mask<small>Wearable, logo glows through</small></button>
         </div>
         <div class="presets" id="presets" role="group" aria-label="Shape"></div>
       </div>
@@ -581,6 +582,33 @@ details.adv>.adv-body{display:flex;flex-direction:column;gap:14px;padding:2px 14
         </div>
         <span class="note">Fluted ribs use Texture depth and Columns. The front panel stays flat for the logo.</span>
       </div>
+      <div class="sub" id="maskOpts" hidden>
+        <div class="row2">
+          <div><label for="mkStyle" class="lbl">Mask style</label>
+            <select class="text" id="mkStyle"><option value="half">Half mask · angular face guard</option><option value="full">Full face · glowing eyes + smile</option></select></div>
+          <div><label for="mkGlowCol" class="lbl">Glow colour (preview)</label><input type="color" id="mkGlowCol" value="#8a3cff" style="width:100%;height:38px"></div>
+        </div>
+        <div class="row2" id="mkFullRow" hidden>
+          <div><label for="mkEyes" class="lbl">Eyes</label>
+            <select class="text" id="mkEyes"><option value="x">X eyes</option><option value="slit">Slit eyes</option><option value="logo">Your logo as both eyes</option></select></div>
+          <div><label for="mkMouth" class="lbl">Mouth</label>
+            <select class="text" id="mkMouth"><option value="stitch">Stitched smile</option><option value="grin">Plain grin</option><option value="none">None</option></select></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="mkScale">Size</label><output id="mkScaleOut"></output><input type="range" id="mkScale" min="85" max="115" step="1" value="100"></div>
+          <div class="field"><label for="mkWall">Shell thickness</label><output id="mkWallOut"></output><input type="range" id="mkWall" min="1.6" max="3" step="0.1" value="2"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="mkLogoW">Logo width</label><output id="mkLogoWOut"></output><input type="range" id="mkLogoW" min="20" max="60" step="1" value="34"></div>
+          <div class="field"><label for="mkLine">Glow line width</label><output id="mkLineOut"></output><input type="range" id="mkLine" min="2" max="6" step="0.5" value="3.5"></div>
+        </div>
+        <label class="check"><input type="checkbox" id="mkLogo" checked> <span>Cut the logo through (glows from behind)</span></label>
+        <label class="check"><input type="checkbox" id="mkLines" checked> <span>Glow lines</span></label>
+        <label class="check"><input type="checkbox" id="mkVents" checked> <span>Vents</span></label>
+        <label class="check"><input type="checkbox" id="mkGlow" checked> <span>Show glow in the preview</span></label>
+        <span class="note"><b>Making it glow:</b> stick a thin white diffuser (tracing paper, frosted film or a 0.4 mm white print) inside over the cut-outs, then a 5 V USB LED strip or EL wire behind it, powered from a small power bank in a pocket. Thread a 20–25 mm elastic strap through the side slots.</span>
+        <span class="note"><b>Printing:</b> exported standing on its chin edge, which needs few supports (tree supports, touching the build plate only). Print in matte black PLA/PETG, 0.16 mm layers, 3 walls. Bold logos work best; thin lines are joined with small bridges automatically. Smooth any edges near the face before wearing.</span>
+      </div>
       <div class="sub" id="wallOpts" hidden>
         <div><span class="lbl">Shadow picture</span>
           <div class="row2" style="align-items:center">
@@ -696,7 +724,7 @@ const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const S = {
-  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
+  product:'mug', divider:0, layers:[], bhSocket:'e27', bhHole:40.5, bhCollar:4, bhPlate:3, bhCord:8, bhExplode:false, mkStyle:'half', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:34, mkLine:3.5, mkLogo:true, mkLines:true, mkVents:true, mkGlow:true, mkGlowCol:'#8a3cff', wlSize:600, wlLed:60, wlW:150, wlD:120, wlWall:2, wlPower:'usb', wlFront:true, lampBase:'std', minFeat:1.2, slMount:'base', slLamp:'e14', slDrop:55, prShape:'cone', prMode:'light', prDist:300, prSize:360, prLift:120, prBars:0, prWidth:84, prH:52, prLed:38, prLight:24, prWall:1.2, slSize:360, slRays:0, slRing:84, slLed:38, slLight:28, slSmooth:3, slWall:1.6, slCx:-1, slCy:-1, slWallMode:false, cobrand:false, sep:'×', cbOrder:'ours', cbBalance:0, pbRows:2, pbHole:13, pbDepth:52, pbStagger:true, mnDepth:38, mnNeck:24, tbLayout:'row3', tbBase:28, tbStep:18, cpCup:66, cpFront:36, cpSlot:22, twist:0.35, slant:0, hcSides:6, hcBand:false, stBays:3, stDir:'right', stDepth:70, stLow:50, phAngle:65, phSlot:14, phLip:30, hexLayout:'flower', hexBase:30, hexStep:16, cadDepth:100, cadFront:48, cadSlot:34, cadSplit:true, cadFoot:true, duoLen:135, duoH2:60, dropWhite:false, texture:'smooth', texDepth:1.4, texCols:20, texRow:11, cuff:false, cuffH:18, cuffOut:2, H:100, D:84, taper:0, wall:6, base:6, handle:false, color:'#7c7f84',
   mode:'raised', logoW:52, angle:0, ly:44, both:false,
   depth:1.6, thr:0.5, invert:false, heightSrc:'layered', reliefColor:'full', smooth:2, hiDetail:false, logoColor:'#1d2c7a', removeBg:true, stickerW:0, nColors:5, text:'', textFont:"800|'Baloo 2'", textPos:'below', textSize:27, textColor:'#12939a'
 };
@@ -718,7 +746,8 @@ const camera = new THREE.PerspectiveCamera(32, 1, 1, 4000);
 const controls = new THREE.OrbitControls(camera, canvas);
 controls.enableDamping = true; controls.minDistance = 120; controls.maxDistance = 700;
 controls.autoRotate = !reduced; controls.autoRotateSpeed = 1.2;
-function resetView(){ if (typeof S !== 'undefined' && S.product === 'wall'){ const d = (wlData ? wlData.Rfar : 300) * 2.1; camera.position.set(0, d, d * 0.55); controls.target.set(0, 0, 0); controls.update(); return; }
+function resetView(){ if (typeof S !== 'undefined' && S.product === 'mask'){ const k = S.mkScale / 100, f = S.mkStyle === 'full' ? 2.05 : 1.15; camera.position.set(28 * f * k, 30 * f * k, 300 * f * k); controls.target.set(0, 0, 40 * k); controls.update(); return; }
+  if (typeof S !== 'undefined' && S.product === 'wall'){ const d = (wlData ? wlData.Rfar : 300) * 2.1; camera.position.set(0, d, d * 0.55); controls.target.set(0, 0, 0); controls.update(); return; }
   if (typeof S !== 'undefined' && S.product === 'proj'){ const d = S.prDist, h = S.prLight + S.prLift; camera.position.set(-d * 0.55 - 120, h + d * 0.35 + 80, -d * 0.75 - 160); controls.target.set(0, h * 0.6, d * 0.55); controls.update(); return; }
   if (typeof S !== 'undefined' && S.product === 'shadow'){ const r = slData ? Math.min(slData.Rfar, 600) : 200; camera.position.set(0, r * 1.9 + 60, r * 1.5 + 60); controls.target.set(0, 0, 0); controls.update(); return; } camera.position.set(60, 70, 300); controls.target.set(0, 0, 0); controls.update(); }
 resetView();
@@ -838,6 +867,126 @@ function bodyGeometry(){
   return g;
 }
 
+// ---------- LED mask ----------
+// The shell is a faceted surface around a vertical axis through the head (th = 0 straight ahead). Everything
+// that is cut (the outline, vents, glow lines, eyes, mouth and the logo) is a 2D shape in mask coordinates
+// (X = th * 90 mm, Y = height), turned into a smooth field and traced with the same marching squares as the lamps.
+let mkData = null;
+const MASKS = {
+  half: {H: 90, Rref: 90,
+    // right half of the outline, chin centre -> nose bridge (mirrored)
+    outline: [[0, 0], [9, 0], [18, 3], [44, 8], [66, 15], [84, 30], [92, 48], [90, 66], [84, 82], [72, 88], [58, 74], [30, 64], [14, 82], [0, 89]],
+    ctrlA: [0, 12, 24, 36, 48, 60, 72], ctrlR: [97, 95, 90, 84, 78, 73, 70],
+    logo: [0, 70, 1, 0.62], strap: [80, 40, 62]},
+  full: {H: 215, Rref: 90,
+    outline: [[0, 0], [10, 0], [26, 4], [62, 14], [96, 36], [116, 72], [124, 118], [122, 156], [108, 186], [80, 206], [42, 214], [0, 216]],
+    ctrlA: [0, 12, 24, 36, 48, 60, 72, 84], ctrlR: [100, 98, 93, 87, 81, 76, 72, 70],
+    logo: [0, 182, 1.25, 0.52], strap: [114, 116, 148]}
+};
+function sdSeg(px, py, ax, ay, bx, by){ const dx = bx - ax, dy = by - ay, t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy || 1))); return Math.hypot(px - ax - t * dx, py - ay - t * dy); }
+function sdPoly(P, x, y){
+  let d = Infinity, inside = false;
+  for (let i = 0, j = P.length - 1; i < P.length; j = i++){
+    const [xi, yi] = P[i], [xj, yj] = P[j]; d = Math.min(d, sdSeg(x, y, xi, yi, xj, yj));
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside ? -d : d;
+}
+function mkOutline(M){ const r = M.outline, l = r.slice(1, -1).reverse().map(([x, y]) => [-x, y]); return r.concat(l); }
+function mkShapes(){
+  // cut-outs as capsule polylines [points, width] in mask mm (right side; mirrored unless centre)
+  const M = MASKS[S.mkStyle], w = S.mkLine, cuts = [];
+  const both = (pts, wd) => { cuts.push([pts, wd]); cuts.push([pts.map(([x, y]) => [-x, y]), wd]); };
+  if (S.mkStyle === 'half'){
+    if (S.mkLines) both([[38, 80], [50, 60], [42, 48], [60, 22]], w);
+    if (S.mkVents){ for (let k = 0; k < 4; k++) both([[15, 47 - 7.5 * k], [31, 52 - 7.5 * k]], 3.4); both([[66, 44], [80, 50]], 3.4); both([[66, 35], [80, 41]], 3.4); }
+  } else {
+    const e = S.mkEyes;
+    if (e === 'x'){ both([[24, 110], [52, 140]], 7); both([[24, 140], [52, 110]], 7); }
+    else if (e === 'slit'){ both([[18, 122], [40, 128], [58, 128]], 8); }
+    if (S.mkMouth !== 'none'){
+      const arc = []; for (let k = 0; k <= 12; k++){ const x = -66 + k * 11; arc.push([x, 52 + 0.0062 * x * x]); }
+      cuts.push([arc, 5.5]);
+      if (S.mkMouth === 'stitch') for (let k = -4; k <= 4; k++){ const x = k * 13, y = 52 + 0.0062 * x * x, sl = 0.0124 * x; const n = Math.hypot(1, sl), dx = -sl / n * 10, dy = 1 / n * 10; cuts.push([[[x - dx, y - dy], [x + dx, y + dy]], 3.6]); }
+    }
+    if (S.mkLines) both([[102, 168], [108, 118], [92, 56]], w);
+    if (S.mkVents){ for (let k = 0; k < 3; k++) both([[70, 92 - 9 * k], [86, 96 - 9 * k]], 3.4); }
+  }
+  // strap slots (always)
+  const [sx, y0, y1] = M.strap; both([[sx, y0], [sx, y1]], 4.4);
+  return cuts;
+}
+function mkRadius(th, y){
+  // faceted head surface: piecewise linear between control angles and heights
+  th = ((th + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+  const M = MASKS[S.mkStyle], k = S.mkScale / 100, a = Math.abs(th) * 180 / Math.PI, A = M.ctrlA, R = M.ctrlR;
+  let base; if (a >= A[A.length - 1]) base = R[R.length - 1] - (a - A[A.length - 1]) * 0.25; else { let i = 0; while (A[i + 1] < a) i++; const t = (a - A[i]) / (A[i + 1] - A[i]); base = R[i] + (R[i + 1] - R[i]) * t; }
+  const yy = y / k, H = M.H; let sc, ridge;
+  if (S.mkStyle === 'half'){
+    const ys = [0, 18, 40, 64, 90], ss = [0.84, 0.92, 0.98, 1.0, 0.97]; sc = pl(ys, ss, yy);
+    ridge = 6 * Math.max(0, 1 - a / 14) * pl([0, 20, 60, 90], [0.6, 1, 1, 0.5], yy);
+  } else {
+    const ys = [0, 30, 70, 110, 150, 185, 216], ss = [0.8, 0.88, 0.96, 1.0, 1.0, 0.93, 0.8]; sc = pl(ys, ss, yy);
+    ridge = 9 * Math.max(0, 1 - a / 13) * pl([0, 70, 90, 130, 150, 216], [0.2, 0.2, 1, 1, 0.2, 0.1], yy);
+  }
+  return (base * sc + ridge) * k;
+}
+function pl(xs, vs, x){ if (x <= xs[0]) return vs[0]; for (let i = 0; i + 1 < xs.length; i++) if (x <= xs[i + 1]){ const t = (x - xs[i]) / (xs[i + 1] - xs[i]); return vs[i] + (vs[i + 1] - vs[i]) * t; } return vs[vs.length - 1]; }
+function mkCompute(){
+  const M = MASKS[S.mkStyle], k = S.mkScale / 100, H = M.H * k, cell = S.mkStyle === 'half' ? 0.45 : 0.55;
+  const Na = Math.round(2 * Math.PI * M.Rref * k / cell), Nh = Math.round(H / cell), ys = Array.from({length: Nh + 1}, (_, j) => 0.6 * k + j / Nh * (H + 1.5 * k - 0.6 * k));
+  const NN = ys.length, F = new Float32Array(Na * NN), out = mkOutline(M), cuts = mkShapes();
+  // logo window (cut through): centred box, fit the logo by width
+  const LM = S.mkLogo ? slMask() : null, SM = LM ? softMask(LM, 1) : null;
+  const [lx, ly] = M.logo, lw = S.mkLogoW, lh = LM ? lw * LM.h / LM.w : 0, pxmm = LM ? lw / LM.w : 1;
+  const eyesLogo = S.mkStyle === 'full' && S.mkEyes === 'logo';
+  const logoAt = (cx, cy, w, X, Y) => { if (!SM) return Infinity; const h = w * SM.h / SM.w, u = (X - cx + w / 2) / w, v = (cy + h / 2 - Y) / h; if (u < 0 || u > 1 || v < 0 || v > 1) return Infinity; return (0.5 - bilinMask(SM, u * SM.w, v * SM.h)) * (w / SM.w) * 2.2; };
+  const thMax = 2.0;
+  for (let i = 0; i < Na; i++){
+    let th = i / Na * Math.PI * 2; if (th > Math.PI) th -= Math.PI * 2; if (Math.abs(th) > thMax) continue;
+    const X = th * M.Rref;
+    for (let j = 0; j < NN; j++){
+      const Y = ys[j] / k; let v = -sdPoly(out, X, Y);
+      if (v < -3){ F[i * NN + j] = 0; continue; }
+      for (const [pts, wd] of cuts){ let d = Infinity; for (let q = 0; q + 1 < pts.length; q++) d = Math.min(d, sdSeg(X, Y, pts[q][0], pts[q][1], pts[q + 1][0], pts[q + 1][1])); v = Math.min(v, d - wd / 2); }
+      if (SM){
+        if (S.mkStyle === 'full') v = Math.min(v, logoAt(lx, ly, lw, X, Y));
+        else v = Math.min(v, logoAt(lx, ly, lw, X, Y));
+        if (eyesLogo){ v = Math.min(v, logoAt(38, 126, 34, X, Y), logoAt(-38, 126, 34, X, Y)); }
+      }
+      F[i * NN + j] = Math.max(0, Math.min(1, 0.5 + v * k / (cell * 1.6)));
+    }
+  }
+  const cw = 2 * Math.PI * M.Rref * k / Na;
+  thickenField(F, Na, ys, cw, S.minFeat);
+  const bars = fieldFix(F, Na, NN, Math.max(3, Math.round(1.6 / cw)), 12);
+  let x0 = Infinity, x1 = -Infinity; for (const [x] of out){ x0 = Math.min(x0, x); x1 = Math.max(x1, x); }
+  const thE = x1 / M.Rref, wid = 2 * mkRadius(thE, H * 0.5) * Math.sin(Math.min(Math.PI / 2, thE));
+  mkData = {Na, NN, ys, F, H, bars, wid, k};
+  return mkData;
+}
+function maskGeometries(){
+  const D = mkCompute(); if (!D) return [];
+  const place = (th, r, y) => [Math.sin(th) * r, y, Math.cos(th) * r];
+  const g = smoothShell(D.F, D.Na, D.ys, (y, th) => mkRadius(th, y), S.mkWall, place, (y, th) => mkRadius(th, y) - S.mkWall);
+  g.translate(0, -D.ys[0], 0);
+  return [['Mask shell', g]];
+}
+function maskGlowGeometry(){
+  // preview only: a glowing layer just inside the shell, seen through the cut-outs
+  const D = mkData; if (!D) return null;
+  const M = MASKS[S.mkStyle], k = D.k, out = mkOutline(M), Na = Math.round(D.Na / 3), ys = D.ys.filter((_, j) => j % 3 === 0), NN = ys.length, F = new Float32Array(Na * NN);
+  // glow only behind the cut-outs: open cells of the shell, grown by ~2 mm, inside the outline
+  const open = (ii, jj) => { const i0 = ((ii * 3) % D.Na + D.Na) % D.Na, j0 = Math.max(0, Math.min(D.NN - 1, jj * 3)); return D.F[i0 * D.NN + j0] < 0.5; };
+  for (let i = 0; i < Na; i++){ let th = i / Na * Math.PI * 2; if (th > Math.PI) th -= Math.PI * 2; if (Math.abs(th) > 2) continue;
+    for (let j = 0; j < NN; j++){
+      if (-sdPoly(out, th * M.Rref, ys[j] / k) < 1.5) continue;
+      let near = false; for (let di = -2; di <= 2 && !near; di++) for (let dj = -2; dj <= 2 && !near; dj++) if (open(i + di, j + dj)) near = true;
+      F[i * NN + j] = near ? 1 : 0;
+    } }
+  const place = (th, r, y) => [Math.sin(th) * r, y - D.ys[0], Math.cos(th) * r];
+  return smoothShell(F, Na, ys, (y, th) => mkRadius(th, y) - S.mkWall - 0.7, 0.3, place, (y, th) => mkRadius(th, y) - S.mkWall - 1.0);
+}
 // ---------- wall shadow lamp ----------
 // Modelled lying on the wall (y = 0 is the wall). Back plate (stock) 0..WL.bp, tray floor on top of it, walls
 // rise out from the wall, and an LED on a post shines back at the wall. The walls are traced like the shadow lamp,
@@ -1116,6 +1265,7 @@ function buildStock(){
     mug.position.y = 0; const g = domeGeometry(); if (g){ const m = new THREE.Mesh(g, ringMat); m.name = 'Dome top'; baseGrp.add(m); baseGrp.position.y = slData.Hr; } return;
   }
   if (S.product === 'shadow' || S.product === 'proj'){ const m = new THREE.Mesh(lightBaseGeometry(), ringMat); m.name = 'Light base'; baseGrp.add(m); return; }
+  if (S.product === 'mask'){ if (S.mkGlow && mkData){ const g = maskGlowGeometry(); if (g){ const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({color: S.mkGlowCol, side: THREE.DoubleSide})); m.name = 'Glow (preview)'; baseGrp.add(m); } } return; }
   if (S.product === 'wall'){ mug.position.y = WL.bp; if (!wlData) return; const m1 = new THREE.Mesh(wlBackGeometry(), ringMat); m1.name = 'Back plate'; const m2 = new THREE.Mesh(wlPostGeometry(), ringMat); m2.name = 'LED post'; baseGrp.add(m1, m2); return; }
   if (S.product !== 'bulb') return;
   const P = bulbStockParts();
@@ -1214,7 +1364,7 @@ function frontInfo(){
   if (S.product === 'phone'){ const P = phoneProfile(); return {x0: -S.D/2, x1: S.D/2, zf: P.zF, lo: 3, hi: S.phLip - 3, rc: 3}; }
   const W = S.D, f = cadFootH(); return {x0: -W/2, x1: W/2, zf: S.cadDepth/2, lo: f + 3, hi: f + S.H * S.cadFront/100 - 3, rc: 6};
 }
-const PRODUCT_WORDS = {mug:'mug', pen:'pen-holder', duo:'duo-organiser', caddy:'desk-caddy', hex:'honeycomb-stand', phone:'phone-stand', hexcup:'hexagon-cup', steps:'step-organiser', tubes:'tube-cluster', card:'card-pen-holder', block:'pen-block', monitor:'monitor-holder', shadow:'shadow-ring', proj:'projector-shell', bulb:'lamp-base', wall:'wall-shadow-tray'};
+const PRODUCT_WORDS = {mug:'mug', pen:'pen-holder', duo:'duo-organiser', caddy:'desk-caddy', hex:'honeycomb-stand', phone:'phone-stand', hexcup:'hexagon-cup', steps:'step-organiser', tubes:'tube-cluster', card:'card-pen-holder', block:'pen-block', monitor:'monitor-holder', shadow:'shadow-ring', proj:'projector-shell', bulb:'lamp-base', wall:'wall-shadow-tray', mask:'led-mask'};
 const productWord = () => PRODUCT_WORDS[S.product] || 'mug';
 // ---------- smooth cut-out shells (shadow + projector lamps) ----------
 // A lamp wall is described by a value at every grid node (around x up): 1 = solid, 0 = open, in between near
@@ -2392,7 +2542,8 @@ function build(){
   disposeMug();
   bodyMat.color.set(S.color); logoMat.color.set(S.logoColor);
   bodyMat.roughness = isFlat() ? 0.68 : 0.32; bodyMat.clearcoat = isFlat() ? 0.05 : 0.7; bodyMat.envMapIntensity = isFlat() ? 0.42 : 0.8;
-  if (S.product === 'wall') wallGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, /Logo/.test(name) ? logoMat : bodyMat); m.name = name; mug.add(m); });
+  if (S.product === 'mask') maskGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
+  else if (S.product === 'wall') wallGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, /Logo/.test(name) ? logoMat : bodyMat); m.name = name; mug.add(m); });
   else if (S.product === 'proj') projectorGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
   else if (S.product === 'shadow') shadowGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
   else if (S.product === 'block') blockGeometries().forEach(([name, g]) => { const m = new THREE.Mesh(g, bodyMat); m.name = name; mug.add(m); });
@@ -2412,15 +2563,15 @@ function build(){
   buildStock();
   layerL = null; if (logoBase) logoProc = logoBase;
   const activeLayers = S.layers.filter(t => t.text.trim());
-  if (logoBase && activeLayers.length && S.product !== 'shadow' && S.product !== 'proj' && S.product !== 'wall'){ composeLayers(activeLayers); }
+  if (logoBase && activeLayers.length && S.product !== 'shadow' && S.product !== 'proj' && S.product !== 'wall' && S.product !== 'mask'){ composeLayers(activeLayers); }
   else if (logoBase && logoInk && logoInk._for !== logoBase){ logoInk = computeInk(logoBase); logoInk._for = logoBase; labelCache = null; }
-  if (logoProc && S.product !== 'shadow' && S.product !== 'proj' && S.product !== 'wall'){
+  if (logoProc && S.product !== 'shadow' && S.product !== 'proj' && S.product !== 'wall' && S.product !== 'mask'){
     const L = logoLayout();
     if (S.mode === 'print') mug.add(decalMesh(L));
     else angles().forEach(a => mug.add(reliefMesh(L, a)));
     $('lwOut').textContent = L.w.toFixed(0) + ' × ' + L.h.toFixed(0) + ' mm';
   }
-  pivot.position.y = S.product === 'wall' ? -(wlData ? wlData.e : 60) / 2 : S.product === 'shadow' ? -(slData ? slData.e : 20) / 2 : S.product === 'proj' ? -S.prH / 2 : -S.H/2;
+  pivot.position.y = S.product === 'mask' ? -(mkData ? mkData.H : 90) / 2 : S.product === 'wall' ? -(wlData ? wlData.e : 60) / 2 : S.product === 'shadow' ? -(slData ? slData.e : 20) / 2 : S.product === 'proj' ? -S.prH / 2 : -S.H/2;
   updateShadowPreview(); drawShadowPicker(); updateProjectorPreview(); updateWallPreview();
   const s = S.product === 'proj' ? S.prLed * 2.6 : S.product === 'shadow' ? 0.001 : S.product === 'block' ? S.D * 1.3 : S.product === 'monitor' ? S.D * 1.2 : S.product === 'tubes' ? (tubesPlinth().x1 - tubesPlinth().x0) * 1.3 : S.product === 'card' ? S.D * 1.3 : S.product === 'hexcup' ? S.D * 1.8 : S.product === 'steps' ? Math.max(S.D * S.stBays, S.stDepth) * 1.4 : S.product === 'phone' ? Math.max(S.D, S.H) * 1.5 : S.product === 'hex' ? (hexPlinth().x1 - hexPlinth().x0) * 1.4 : S.product === 'caddy' ? Math.max(S.D, S.cadDepth) * 1.6 : S.product === 'duo' ? Math.max(S.D, S.duoLen) * 1.5 : S.D * 1.7; shadow.scale.set(s, s, 1); shadow.position.set(S.handle && S.product === 'mug' ? 8 : 0, 0.05, 0);
   updateReadout();
@@ -2461,7 +2612,7 @@ function updateReadout(){
     `<span class="tag"><i>H</i><b>${sz.y.toFixed(0)}</b></span>` +
     `<span class="tag"><i>W</i><b>${sz.x.toFixed(0)}</b></span>` +
     `<span class="tag"><i>D</i><b>${sz.z.toFixed(0)} mm</b></span>` +
-    (S.product === 'wall' ? `<span class="tag"><i>Shadow</i><b>≈ ${wlData ? Math.round(wlData.Rfar * 2 / 10) : '–'} cm</b></span><span class="tag"><i>Tray</i><b>${S.wlW}×${S.wlD}×${wlData ? Math.round(wlData.yTop - WL.bp) : '–'} mm</b></span>` : S.product === 'bulb' ? `<span class="tag"><i>Socket hole</i><b>Ø ${S.bhHole} mm</b></span>` : S.product === 'proj' ? `<span class="tag"><i>Projects</i><b>${Math.round(S.prSize / 10)} cm at ${Math.round(S.prDist / 10)} cm</b></span>` : S.product === 'shadow' ? `<span class="tag"><i>Shadow</i><b>≈ ${slData ? Math.round(slData.Rfar * 2 / 10) : '–'} cm</b></span>` + (slData && slData.dome ? `<span class="tag"><i>Ring</i><b>${Math.round(slData.Hr)} mm tall</b></span>` + (slData.dropShort ? `<span class="tag warn"><i>Bulb drop</i><b>needs ≥ ${Math.ceil(slData.needDrop)} mm</b></span>` : '') : '') : S.product === 'block' ? `<span class="tag"><i>Holes</i><b>${blockHoles().length}</b></span>` : S.product === 'monitor' ? `<span class="tag"><i>Holds</i><b>pens in the screen</b></span>` : S.product === 'tubes' ? `<span class="tag"><i>Tubes</i><b>${tubeCells().length}</b></span>` : S.product === 'card' ? `<span class="tag"><i>Holds</i><b>cards + pens</b></span>` : S.product === 'hexcup' ? `<span class="tag"><i>Fits</i><b>≈ ${Math.max(4, Math.floor(Math.pow((S.D - 2*S.wall)/2, 2) * 0.42 / 21))} pens</b></span>` : S.product === 'steps' ? `<span class="tag"><i>Bays</i><b>${S.stBays}</b></span>` : S.product === 'phone' ? `<span class="tag"><i>Fits</i><b>phones up to ${S.phSlot} mm</b></span>` : S.product === 'hex' ? `<span class="tag"><i>Fits</i><b>≈ ${hexCells().length * Math.max(2, Math.floor(Math.pow((S.D - 2*S.wall) / 9.5, 2) * 0.8))} pens</b></span>` : S.product === 'caddy' ? `<span class="tag"><i>Holds</i><b>phone + pens</b></span>` : S.product === 'duo' ? `<span class="tag"><i>Holds</i><b>cup + tray</b></span>` : S.product === 'pen'
+    (S.product === 'mask' ? `<span class="tag"><i>Mask</i><b>${mkData ? Math.round(mkData.wid) : '–'} × ${mkData ? Math.round(mkData.H) : '–'} mm</b></span>` : S.product === 'wall' ? `<span class="tag"><i>Shadow</i><b>≈ ${wlData ? Math.round(wlData.Rfar * 2 / 10) : '–'} cm</b></span><span class="tag"><i>Tray</i><b>${S.wlW}×${S.wlD}×${wlData ? Math.round(wlData.yTop - WL.bp) : '–'} mm</b></span>` : S.product === 'bulb' ? `<span class="tag"><i>Socket hole</i><b>Ø ${S.bhHole} mm</b></span>` : S.product === 'proj' ? `<span class="tag"><i>Projects</i><b>${Math.round(S.prSize / 10)} cm at ${Math.round(S.prDist / 10)} cm</b></span>` : S.product === 'shadow' ? `<span class="tag"><i>Shadow</i><b>≈ ${slData ? Math.round(slData.Rfar * 2 / 10) : '–'} cm</b></span>` + (slData && slData.dome ? `<span class="tag"><i>Ring</i><b>${Math.round(slData.Hr)} mm tall</b></span>` + (slData.dropShort ? `<span class="tag warn"><i>Bulb drop</i><b>needs ≥ ${Math.ceil(slData.needDrop)} mm</b></span>` : '') : '') : S.product === 'block' ? `<span class="tag"><i>Holes</i><b>${blockHoles().length}</b></span>` : S.product === 'monitor' ? `<span class="tag"><i>Holds</i><b>pens in the screen</b></span>` : S.product === 'tubes' ? `<span class="tag"><i>Tubes</i><b>${tubeCells().length}</b></span>` : S.product === 'card' ? `<span class="tag"><i>Holds</i><b>cards + pens</b></span>` : S.product === 'hexcup' ? `<span class="tag"><i>Fits</i><b>≈ ${Math.max(4, Math.floor(Math.pow((S.D - 2*S.wall)/2, 2) * 0.42 / 21))} pens</b></span>` : S.product === 'steps' ? `<span class="tag"><i>Bays</i><b>${S.stBays}</b></span>` : S.product === 'phone' ? `<span class="tag"><i>Fits</i><b>phones up to ${S.phSlot} mm</b></span>` : S.product === 'hex' ? `<span class="tag"><i>Fits</i><b>≈ ${hexCells().length * Math.max(2, Math.floor(Math.pow((S.D - 2*S.wall) / 9.5, 2) * 0.8))} pens</b></span>` : S.product === 'caddy' ? `<span class="tag"><i>Holds</i><b>phone + pens</b></span>` : S.product === 'duo' ? `<span class="tag"><i>Holds</i><b>cup + tray</b></span>` : S.product === 'pen'
       ? `<span class="tag"><i>Fits</i><b>≈ ${penCount()} pens</b></span>`
       : `<span class="tag"><i>Holds</i><b>≈ ${Math.round(capacityMl() / 5) * 5} ml</b></span>`);
 }
@@ -2507,6 +2658,11 @@ const PRESETS = {
     ['latte', 'Tall latte', '~450 ml', {mh:118, md:84, mt:4, mw:4, mb:6, handle:true}],
     ['espresso', 'Espresso', '~150 ml', {mh:70, md:64, mt:3, mw:3.5, mb:6, handle:true}],
     ['tumbler', 'Tumbler', 'no handle', {mh:125, md:80, mt:12, mw:4, mb:6, handle:false}]
+  ],
+  mask: [
+    ['mkHalf', 'Half mask', 'angular · glow lines', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#1c1c22', mkStyle:'half', mkScale:100, mkWall:2, mkLogoW:34, mkLine:3.5, mkGlowCol:'#8a3cff', texture:'smooth'}],
+    ['mkSmile', 'Full face', 'X eyes · stitched smile', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#141418', mkStyle:'full', mkEyes:'x', mkMouth:'stitch', mkScale:100, mkWall:2, mkLogoW:44, mkLine:3.5, mkGlowCol:'#4f7dff', texture:'smooth'}],
+    ['mkLogoEyes', 'Logo eyes', 'your logo in both eyes', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#141418', mkStyle:'full', mkEyes:'logo', mkMouth:'grin', mkScale:100, mkWall:2, mkLogoW:40, mkLine:3, mkGlowCol:'#ff3c8a', texture:'smooth'}]
   ],
   wall: [
     ['wlStd', 'Standard', '15 × 12 cm · 60 cm shadow', {mh:80, md:80, mw:2, mb:2, handle:false, color:'#d23a2a', logoColor:'#141414', wlW:150, wlD:120, wlSize:600, wlLed:60, wlWall:2, texture:'smooth'}],
@@ -2605,7 +2761,7 @@ function applyPreset(key, p){
   $('handle').checked = p.handle; S.handle = p.handle;
   if (p.divider !== undefined){ S.divider = p.divider; $('divider').value = String(p.divider); }
   setTexture(p.texture || (S.product === 'duo' ? 'ribbed' : 'smooth'), true);
-  [['prDist','prDist'],['prSize','prSize'],['prLift','prLift'],['prBars','prBars'],['prWidth','prWidth'],['prH','prH'],['prLed','prLed'],['prLight','prLight'],['prWall','prWall'],['slSize','slSize'],['wlW','wlW'],['wlD','wlD'],['wlSize','wlSize'],['wlLed','wlLed'],['wlWall','wlWall'],['slDrop','slDrop'],['slRing','slRing'],['slRays','slRays'],['slLed','slLed'],['slLight','slLight'],['slSmooth','slSmooth'],['slWall','slWall'],['pbHole','pbHole'],['pbDepth','pbDepth'],['mnDepth','mnDepth'],['mnNeck','mnNeck'],['tbBase','tbBase'],['tbStep','tbStep'],['cpCup','cpCup'],['cpFront','cpFront'],['cpSlot','cpSlot'],['stDepth','stDepth'],['stLow','stLow'],['phAngle','phAngle'],['phSlot','phSlot'],['phLip','phLip'],['hexBase','hexBase'],['hexStep','hexStep'],['cadDepth','cadDepth'],['cadFront','cadFront'],['cadSlot','cadSlot'],['duoLen','duoLen'],['duoH2','duoH2'],['texCols','texCols'],['texDepth','texDepth'],['lw','logoW'],['ly','ly']].forEach(([id, k]) => { if (p[k] !== undefined){ $(id).value = p[k]; $(id).dispatchEvent(new Event('input')); } });
+  [['prDist','prDist'],['prSize','prSize'],['prLift','prLift'],['prBars','prBars'],['prWidth','prWidth'],['prH','prH'],['prLed','prLed'],['prLight','prLight'],['prWall','prWall'],['slSize','slSize'],['mkScale','mkScale'],['mkWall','mkWall'],['mkLogoW','mkLogoW'],['mkLine','mkLine'],['wlW','wlW'],['wlD','wlD'],['wlSize','wlSize'],['wlLed','wlLed'],['wlWall','wlWall'],['slDrop','slDrop'],['slRing','slRing'],['slRays','slRays'],['slLed','slLed'],['slLight','slLight'],['slSmooth','slSmooth'],['slWall','slWall'],['pbHole','pbHole'],['pbDepth','pbDepth'],['mnDepth','mnDepth'],['mnNeck','mnNeck'],['tbBase','tbBase'],['tbStep','tbStep'],['cpCup','cpCup'],['cpFront','cpFront'],['cpSlot','cpSlot'],['stDepth','stDepth'],['stLow','stLow'],['phAngle','phAngle'],['phSlot','phSlot'],['phLip','phLip'],['hexBase','hexBase'],['hexStep','hexStep'],['cadDepth','cadDepth'],['cadFront','cadFront'],['cadSlot','cadSlot'],['duoLen','duoLen'],['duoH2','duoH2'],['texCols','texCols'],['texDepth','texDepth'],['lw','logoW'],['ly','ly']].forEach(([id, k]) => { if (p[k] !== undefined){ $(id).value = p[k]; $(id).dispatchEvent(new Event('input')); } });
   if (p.depth){ $('depth').value = p.depth; $('depth').dispatchEvent(new Event('input')); }
   if (p.text !== undefined){ S.text = p.text; $('logoText').value = p.text; }
   if (p.textColor){ S.textColor = p.textColor; $('textColor').value = p.textColor; }
@@ -2621,6 +2777,7 @@ function applyPreset(key, p){
   if (p.twist !== undefined){ S.twist = p.twist; $('twist').value = p.twist; $('twist').dispatchEvent(new Event('input')); }
   S.slant = p.slant || 0; $('slant').value = Math.round(S.slant * 100); $('slantOut').textContent = S.slant ? Math.round(S.slant * 100) + '%' : 'Flat';
   if (p.bhSocket) setSocket(p.bhSocket);
+  if (p.mkStyle){ setMaskStyle(p.mkStyle); if (p.mkEyes){ S.mkEyes = p.mkEyes; $('mkEyes').value = p.mkEyes; } if (p.mkMouth){ S.mkMouth = p.mkMouth; $('mkMouth').value = p.mkMouth; } if (p.mkGlowCol){ S.mkGlowCol = p.mkGlowCol; $('mkGlowCol').value = p.mkGlowCol; } }
   if (p.lampBase) setLampBase(p.lampBase);
   if (S.product === 'shadow'){ setMount(p.slMount || 'base'); if (p.slLamp) setDomeLamp(p.slLamp); if (p.slDrop) { $('slDrop').value = p.slDrop; $('slDrop').dispatchEvent(new Event('input')); } }
   if (p.prShape){ S.prShape = p.prShape; $('prShape').value = p.prShape; }
@@ -2683,7 +2840,8 @@ function setProduct0(prod){
   $('prodTubes').setAttribute('aria-pressed', String(prod === 'tubes')); $('tubesOpts').hidden = prod !== 'tubes';
   $('prodCard').setAttribute('aria-pressed', String(prod === 'card')); $('cardOpts').hidden = prod !== 'card';
   $('prodBlock').setAttribute('aria-pressed', String(prod === 'block')); $('blockOpts').hidden = prod !== 'block';
-  const wl = prod === 'wall', pr = prod === 'proj', sl = prod === 'shadow' || pr || wl;
+  const mk = prod === 'mask', wl = prod === 'wall', pr = prod === 'proj', sl = prod === 'shadow' || pr || wl || mk;
+  $('prodMask').setAttribute('aria-pressed', String(mk)); $('maskOpts').hidden = !mk;
   $('prodWall').setAttribute('aria-pressed', String(wl)); $('wallOpts').hidden = !wl; $('wallExport').hidden = !wl;
   $('prodShadow').setAttribute('aria-pressed', String(prod === 'shadow')); $('shadowOpts').hidden = prod !== 'shadow';
   $('prodProj').setAttribute('aria-pressed', String(pr)); $('projOpts').hidden = !pr;
@@ -2716,6 +2874,12 @@ $('prodTubes').addEventListener('click', () => { if (S.product !== 'tubes') setP
 $('prodCard').addEventListener('click', () => { if (S.product !== 'card') setProduct('card'); });
 $('prodBlock').addEventListener('click', () => { if (S.product !== 'block') setProduct('block'); });
 $('prodBulb').addEventListener('click', () => { if (S.product !== 'bulb') setProduct('bulb'); });
+$('prodMask').addEventListener('click', () => { if (S.product !== 'mask'){ setProduct('mask'); setTimeout(resetView, 60); } });
+function setMaskStyle(v){ S.mkStyle = v; $('mkStyle').value = v; $('mkFullRow').hidden = v !== 'full'; }
+$('mkStyle').addEventListener('change', e => { setMaskStyle(e.target.value); rebuild(); setTimeout(resetView, 60); });
+[['mkEyes', 'mkEyes'], ['mkMouth', 'mkMouth']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.value; rebuild(); }));
+[['mkLogo', 'mkLogo'], ['mkLines', 'mkLines'], ['mkVents', 'mkVents'], ['mkGlow', 'mkGlow']].forEach(([id, k]) => $(id).addEventListener('change', e => { S[k] = e.target.checked; rebuild(); }));
+$('mkGlowCol').addEventListener('input', e => { S.mkGlowCol = e.target.value; baseGrp.children.forEach(o => { if (o.name === 'Glow (preview)') o.material.color.set(S.mkGlowCol); }); });
 $('prodWall').addEventListener('click', () => { if (S.product !== 'wall'){ setProduct('wall'); setTimeout(resetView, 60); } });
 $('wlPic').addEventListener('change', e => {
   const f = e.target.files && e.target.files[0]; if (!f) return; const url = URL.createObjectURL(f), im = new Image();
@@ -2821,7 +2985,8 @@ bindRange('duoLen', 'duoLen', v => v + ' mm');
 $('slant').addEventListener('input', e => { S.slant = parseFloat(e.target.value) / 100; $('slantOut').textContent = S.slant ? e.target.value + '%' : 'Flat'; rebuild(); });
 $('slantOut').textContent = 'Flat';
 bindRange('prDist', 'prDist', v => Math.round(v / 10) + ' cm'); bindRange('prSize', 'prSize', v => Math.round(v / 10) + ' cm'); bindRange('prLift', 'prLift', v => (v >= 0 ? '+' : '') + Math.round(v / 10) + ' cm');
-bindRange('prWidth', 'prWidth', v => v + ' mm'); bindRange('wlSize', 'wlSize', v => Math.round(v / 10) + ' cm'); bindRange('wlLed', 'wlLed', v => v + ' mm'); bindRange('wlW', 'wlW', v => v + ' mm'); bindRange('wlD', 'wlD', v => v + ' mm'); bindRange('wlWall', 'wlWall', v => v.toFixed(1) + ' mm');
+bindRange('prWidth', 'prWidth', v => v + ' mm'); bindRange('mkScale', 'mkScale', v => v + '%'); bindRange('mkWall', 'mkWall', v => v.toFixed(1) + ' mm'); bindRange('mkLogoW', 'mkLogoW', v => v + ' mm'); bindRange('mkLine', 'mkLine', v => v.toFixed(1) + ' mm');
+bindRange('wlSize', 'wlSize', v => Math.round(v / 10) + ' cm'); bindRange('wlLed', 'wlLed', v => v + ' mm'); bindRange('wlW', 'wlW', v => v + ' mm'); bindRange('wlD', 'wlD', v => v + ' mm'); bindRange('wlWall', 'wlWall', v => v.toFixed(1) + ' mm');
 bindRange('bhHole', 'bhHole', v => v + ' mm'); bindRange('bhCollar', 'bhCollar', v => v ? v + ' mm' : 'None');  bindRange('bhCord', 'bhCord', v => v + ' mm'); bindRange('prBars', 'prBars', v => v ? v + '' : 'None'); bindRange('prH', 'prH', v => v + ' mm'); bindRange('prLed', 'prLed', v => v + ' mm'); bindRange('prLight', 'prLight', v => v + ' mm'); bindRange('prWall', 'prWall', v => v.toFixed(1) + ' mm');
 bindRange('slSize', 'slSize', v => Math.round(v / 10) + ' cm'); bindRange('slRays', 'slRays', v => v ? v + '' : 'None'); bindRange('slLed', 'slLed', v => v + ' mm');
 ['slMin', 'prMin'].forEach(id => { $(id).addEventListener('input', e => { S.minFeat = parseFloat(e.target.value); ['slMin', 'prMin'].forEach(k => { $(k).value = S.minFeat; $(k + 'Out').textContent = S.minFeat.toFixed(1) + ' mm'; }); rebuild(); }); $(id + 'Out').textContent = '1.2 mm'; });
