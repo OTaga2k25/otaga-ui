@@ -14,6 +14,9 @@ export type { RippleEffectOptions } from './effects/RippleEffect';
 export { MorphText } from './effects/MorphText';
 export type { MorphTextOptions } from './effects/MorphText';
 
+export { SherubhaiModel, SHERUBHAI_MODEL_URL, SHERUBHAI_ANIMATIONS } from './effects/SherubhaiModel';
+export type { SherubhaiModelOptions, SherubhaiAnimation } from './effects/SherubhaiModel';
+
 // React components
 export { FloatingCard as FloatingCardReact } from './react/FloatingCard';
 export type { FloatingCardProps } from './react/FloatingCard';
@@ -29,3 +32,6 @@ export type { RippleEffectProps, RippleEffectHandle } from './react/RippleEffect
 
 export { MorphText as MorphTextReact } from './react/MorphText';
 export type { MorphTextProps, MorphTextHandle } from './react/MorphText';
+
+export { SherubhaiModel as SherubhaiModelReact } from './react/SherubhaiModel';
+export type { SherubhaiModelProps } from './react/SherubhaiModel';

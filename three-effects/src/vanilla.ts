@@ -15,3 +15,6 @@ export type { RippleEffectOptions } from './effects/RippleEffect';
 
 export { MorphText } from './effects/MorphText';
 export type { MorphTextOptions } from './effects/MorphText';
+
+export { SherubhaiModel, SHERUBHAI_MODEL_URL, SHERUBHAI_ANIMATIONS } from './effects/SherubhaiModel';
+export type { SherubhaiModelOptions, SherubhaiAnimation } from './effects/SherubhaiModel';

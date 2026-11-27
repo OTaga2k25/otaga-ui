@@ -6,14 +6,14 @@
   "module": "dist/index.js",
   "browser": "dist/index.umd.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": ["dist", "models"],
   "scripts": {
     "build": "vite build && vite build --config vite.umd.config.ts && npm run types",
     "types": "tsc --emitDeclarationOnly --outDir dist --skipLibCheck",
     "watch": "vite build --watch",
     "dev": "vite build"
   },
-  "keywords": ["three", "threejs", "3d", "effects", "react", "otaga"],
+  "keywords": ["three", "threejs", "3d", "effects", "react", "otaga", "glb", "character", "sherubhai"],
   "author": "Otaga Team",
   "license": "MIT",
   "publishConfig": {

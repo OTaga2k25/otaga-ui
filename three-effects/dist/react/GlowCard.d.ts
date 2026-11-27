@@ -4,4 +4,4 @@ export interface GlowCardProps extends GlowCardOptions {
     className?: string;
     style?: React.CSSProperties;
 }
-export declare function GlowCard({ className, style, ...options }: GlowCardProps): import("react/jsx-runtime").JSX.Element;
+export declare function GlowCard({ className, style, ...options }: GlowCardProps): React.JSX.Element;

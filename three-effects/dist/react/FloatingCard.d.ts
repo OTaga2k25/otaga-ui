@@ -4,4 +4,4 @@ export interface FloatingCardProps extends FloatingCardOptions {
     className?: string;
     style?: React.CSSProperties;
 }
-export declare function FloatingCard({ className, style, ...options }: FloatingCardProps): import("react/jsx-runtime").JSX.Element;
+export declare function FloatingCard({ className, style, ...options }: FloatingCardProps): React.JSX.Element;
