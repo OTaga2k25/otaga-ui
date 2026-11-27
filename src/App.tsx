@@ -60,6 +60,7 @@ import { ThreeGlowCardPage }           from './pages/ThreeGlowCard';
 import { ThreeParticleBackgroundPage } from './pages/ThreeParticleBackground';
 import { ThreeRippleEffectPage }       from './pages/ThreeRippleEffect';
 import { ThreeMorphTextPage }          from './pages/ThreeMorphText';
+import { ThreeSherubhaiPage }         from './pages/ThreeSherubhai';
 /* ── Route map ── */
 const PAGES: Record<string, React.FC> = {
   'overview':            Overview,
@@ -122,6 +123,7 @@ const PAGES: Record<string, React.FC> = {
   '3d-particlebg':     ThreeParticleBackgroundPage,
   '3d-ripple':         ThreeRippleEffectPage,
   '3d-morphtext':      ThreeMorphTextPage,
+  '3d-sherubhai':      ThreeSherubhaiPage,
 };
 
 /* ── Sidebar navigation ── */
@@ -143,6 +145,7 @@ const NAV = [
       { id: '3d-particlebg',   label: 'ParticleBackground' },
       { id: '3d-ripple',       label: 'RippleEffect' },
       { id: '3d-morphtext',    label: 'MorphText' },
+      { id: '3d-sherubhai',    label: 'SherubhaiModel' },
     ],
   },
   {
