@@ -3,6 +3,10 @@ import { Portal } from '../components/Portal';
 import { Footer } from '../components/Footer';
 import { ImageCarousel } from '@otaga/web-ui-kit';
 
+// Logo Studio is a static page in public/logo-studio, so link to the file itself (a full page load, not app navigation)
+const LOGO_STUDIO_URL = '/logo-studio/index.html';
+const STUDIO_COLOR = '#ec4899';
+
 const PORTAL_CARDS = [
   {
     name: "Web UI Kit",
@@ -90,6 +94,7 @@ export function Home({ navigate, theme, setTheme }: { navigate: (id: string) => 
               <span style={{ cursor: 'pointer', whiteSpace: 'nowrap' }} onClick={() => navigate('web-dock')}>EXAMPLES</span>
               <span style={{ cursor: 'pointer', whiteSpace: 'nowrap' }} onClick={() => navigate('rn-installation')}>UI</span>
               <span style={{ cursor: 'pointer', whiteSpace: 'nowrap' }} onClick={() => navigate('cli-docs')}>AI KIT</span>
+              <a href={LOGO_STUDIO_URL} style={{ whiteSpace: 'nowrap', color: STUDIO_COLOR, textDecoration: 'none' }}>LOGO STUDIO</a>
             </nav>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexShrink: 0 }}>
@@ -114,10 +119,10 @@ export function Home({ navigate, theme, setTheme }: { navigate: (id: string) => 
           </header>
 
           {/* Hero Content - LEFT ALIGNED */}
-          <div style={{ padding: '40px 32px 40px 32px', display: 'flex', justifyContent: 'flex-start' }}>
+          <div style={{ padding: '40px 32px 40px 32px', display: 'flex', justifyContent: 'flex-start', alignItems: 'stretch', gap: 24, flexWrap: 'wrap' }}>
             <div style={{
               background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)',
-              padding: '48px', width: '100%', maxWidth: 700, borderRadius: 16,
+              padding: '48px', width: '100%', maxWidth: 700, flex: '1 1 520px', borderRadius: 16,
               boxShadow: '0 32px 80px rgba(0,0,0,0.5)', textAlign: 'left',
               transition: 'border-color 0.5s ease', borderColor: `${activePlatform.color}44`
             }}>
@@ -164,6 +169,43 @@ export function Home({ navigate, theme, setTheme }: { navigate: (id: string) => 
                 </div>
               </div>
             </div>
+
+            {/* Logo Studio: 3D-printable client gifts (static page, so a full page load) */}
+            <a href={LOGO_STUDIO_URL} className="card" style={{
+              flex: '1 1 300px', maxWidth: 460, minWidth: 0, borderRadius: 16, padding: 32,
+              display: 'flex', flexDirection: 'column', textDecoration: 'none', color: 'var(--text)',
+              background: `linear-gradient(160deg, ${STUDIO_COLOR}1f, transparent 55%), var(--surface)`,
+              border: `1px solid ${STUDIO_COLOR}44`, boxShadow: '0 32px 80px rgba(0,0,0,0.35)',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.1em', color: STUDIO_COLOR, background: `${STUDIO_COLOR}18`, padding: '4px 10px', borderRadius: 6 }}>NEW · 3D PRINT</span>
+                <span className="card-arrow" style={{ fontSize: 18, color: 'var(--text-dim)' }}>→</span>
+              </div>
+
+              {/* little scene: a mug with a raised logo badge */}
+              <svg viewBox="0 0 220 120" style={{ width: '100%', height: 'auto', marginBottom: 20 }} aria-hidden="true">
+                <ellipse cx="96" cy="108" rx="62" ry="7" fill="rgba(0,0,0,0.25)" />
+                <path d="M150 42 q30 0 30 26 q0 26 -30 26" fill="none" stroke="var(--text-dim)" strokeWidth="9" strokeLinecap="round" />
+                <rect x="42" y="18" width="110" height="88" rx="10" fill="var(--surface-2)" stroke="var(--border)" />
+                <ellipse cx="97" cy="18" rx="55" ry="7" fill="var(--surface)" stroke="var(--border)" />
+                <rect x="72" y="40" width="50" height="40" rx="8" fill={`${STUDIO_COLOR}22`} stroke={STUDIO_COLOR} strokeWidth="2" />
+                <path d="M84 70 l8 -18 l5 10 l5 -10 l8 18 z" fill={STUDIO_COLOR} />
+                <g fill={STUDIO_COLOR} opacity="0.7"><circle cx="196" cy="22" r="3" /><circle cx="206" cy="36" r="2" /><circle cx="22" cy="40" r="2.5" /></g>
+              </svg>
+
+              <p style={{ fontSize: 26, fontWeight: 900, letterSpacing: '-0.03em', margin: '0 0 8px' }}>Logo Studio</p>
+              <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 24px', flex: 1 }}>
+                Upload a client logo and design 3D-printable gifts: mugs, pen holders, desk organisers,
+                shadow and projector lamps, LED masks. Export STL, 3MF and GLB.
+              </p>
+              <span style={{
+                alignSelf: 'flex-start', background: STUDIO_COLOR, color: '#000', padding: '14px 24px', borderRadius: 8,
+                fontSize: 12, fontWeight: 800, letterSpacing: '0.1em', display: 'inline-flex', alignItems: 'center', gap: 10,
+              }}>
+                OPEN STUDIO
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              </span>
+            </a>
           </div>
 
           {/* 4 Package Cards (Single Row) */}
