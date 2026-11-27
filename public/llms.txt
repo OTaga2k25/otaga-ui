@@ -1,0 +1,73 @@
+# Otaga UI
+
+> Otaga UI is a premium, open-source component library for React (web) and React Native (mobile). It ships two npm packages — `@otaga/web-ui-kit` and `@otaga/rn-ui-kit` — that share identical props APIs so components look and behave consistently across platforms.
+
+## Packages
+
+- `@otaga/web-ui-kit` — React components for web and Next.js apps
+- `@otaga/rn-ui-kit` — React Native components for iOS and Android (Expo compatible)
+- `@otaga/shared-utils` — Shared theme tokens and color utilities used by both kits
+
+## Installation
+
+```bash
+# Web
+npm install @otaga/web-ui-kit
+
+# React Native
+npm install @otaga/rn-ui-kit @otaga/shared-utils
+```
+
+## Web Components (@otaga/web-ui-kit)
+
+- [BuyButton](https://components.otaga.in/#web-buybutton): Swipe-to-buy animated button with drag-to-confirm interaction.
+- [CartButton](https://components.otaga.in/#web-cartbutton): Swipe-to-add-to-cart button with bag icon and drag gesture.
+- [SegmentedControl](https://components.otaga.in/#web-segmentedcontrol): Tab-style option selector with animated active indicator.
+- [Collapsible](https://components.otaga.in/#web-collapsible): Accordion-style expand/collapse section with CSS height transition.
+- [ThemedText](https://components.otaga.in/#web-themedtext): Typography component with variants: title, subtitle, defaultSemiBold, default, link.
+- [ThemedView](https://components.otaga.in/#web-themedview): View with lightColor and darkColor prop support.
+- [BottomBar](https://components.otaga.in/#web-bottombar): Floating tab navigation bar with active pill indicator.
+- [Sidebar](https://components.otaga.in/#web-sidebar): Slide-in navigation panel with backdrop dismiss and Esc key support.
+- [BottomSheet](https://components.otaga.in/#web-bottomsheet): Draggable bottom sheet with multi-level snap points. Supports persistent and dismissible modes.
+- [Icon](https://components.otaga.in/#web-icons): SF Symbols-style icon set rendered via CSS masks.
+- [FlipCard](https://components.otaga.in/#web-flipcard): 3D flip card with front and back faces.
+- [AuthFlipCard](https://components.otaga.in/#web-authflipcard): Flip card with sign-in on front and sign-up on back.
+- [SignInCard](https://components.otaga.in/#web-signincard): Sign-in form card with email, password, social login (Google, Apple, X).
+- [LoginForm](https://components.otaga.in/#web-loginform): Clean login form with gradient button.
+- [SubscribeCard](https://components.otaga.in/#web-subscribecard): Email subscription card component.
+- [WelcomeBackForm](https://components.otaga.in/#web-welcomeback): Welcome back authentication form.
+- [DarkLoginBox](https://components.otaga.in/#web-darkloginbox): Dark-themed login box component.
+- [PurpleLoginForm](https://components.otaga.in/#web-purplelogin): Purple-themed login form.
+- [DoodleFlipCard](https://components.otaga.in/#web-doodleflip): Flip card with doodle-style design.
+
+## React Native Components (@otaga/rn-ui-kit)
+
+- [BuyButton](https://components.otaga.in/#rn-buybutton): Native swipe-to-buy button using PanResponder.
+- [CartButton](https://components.otaga.in/#rn-cartbutton): Native swipe-to-cart button.
+- [Collapsible](https://components.otaga.in/#rn-collapsible): Native accordion with animated height transition.
+- [BottomBar](https://components.otaga.in/#rn-bottombar): Native floating tab bar with active pill.
+- [Sidebar](https://components.otaga.in/#rn-sidebar): Native slide-in drawer with animated overlay.
+- [BottomSheet](https://components.otaga.in/#rn-bottomsheet): Native draggable bottom sheet with snap points and floating notch handle.
+- [IconSymbol](https://components.otaga.in/#rn-iconsymbol): SF Symbols on iOS, Material Icons fallback on Android.
+- [SignInCard](https://components.otaga.in/#rn-signincard): Native sign-in card with animated social buttons (Google, Apple, X).
+- [LoginForm](https://components.otaga.in/#rn-loginform): Native login form.
+- [SubscribeCard](https://components.otaga.in/#rn-subscribecard): Native subscription card.
+- [WelcomeBackForm](https://components.otaga.in/#rn-welcomeback): Native welcome back form.
+- [DarkLoginBox](https://components.otaga.in/#rn-darkloginbox): Native dark login box.
+- [PurpleLoginForm](https://components.otaga.in/#rn-purplelogin): Native purple login form.
+- [FlipCard](https://components.otaga.in/#rn-flipcard): Native 3D flip card.
+- [AuthFlipCard](https://components.otaga.in/#rn-authflipcard): Native auth flip card.
+- [DoodleFlipCard](https://components.otaga.in/#rn-doodleflip): Native doodle flip card.
+
+## Key Design Decisions
+
+- All components are unstyled-friendly — accent colors, backgrounds, and sizes are configurable via props.
+- BottomSheet uses a floating notch pill above the sheet surface (not inside) matching iOS design conventions.
+- BuyButton and CartButton use drag-gesture confirmation to prevent accidental purchases.
+- Both kits share identical prop interfaces so migrating between web and mobile requires minimal changes.
+
+## Links
+
+- Docs: https://components.otaga.in
+- npm (@otaga/web-ui-kit): https://www.npmjs.com/package/@otaga/web-ui-kit
+- npm (@otaga/rn-ui-kit): https://www.npmjs.com/package/@otaga/rn-ui-kit

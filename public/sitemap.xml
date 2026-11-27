@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://components.otaga.in/</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Web UI Kit -->
+  <url><loc>https://components.otaga.in/#web-buybutton</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-cartbutton</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-segmentedcontrol</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-collapsible</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-themedtext</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-themedview</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-bottombar</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-sidebar</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-bottomsheet</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-icons</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-flipcard</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-signincard</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-loginform</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-subscribecard</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-welcomeback</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-darkloginbox</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-purplelogin</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#web-doodleflip</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- React Native UI Kit -->
+  <url><loc>https://components.otaga.in/#rn-buybutton</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-cartbutton</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-collapsible</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-bottombar</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-sidebar</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-bottomsheet</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-iconsymbol</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-signincard</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-loginform</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-subscribecard</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-welcomeback</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-darkloginbox</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-purplelogin</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://components.otaga.in/#rn-doodleflip</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+</urlset>
