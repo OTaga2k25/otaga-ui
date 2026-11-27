@@ -182,16 +182,29 @@ export function Home({ navigate, theme, setTheme }: { navigate: (id: string) => 
                 <span className="card-arrow" style={{ fontSize: 18, color: 'var(--text-dim)' }}>→</span>
               </div>
 
-              {/* little scene: a mug with a raised logo badge */}
-              <svg viewBox="0 0 220 120" style={{ width: '100%', height: 'auto', marginBottom: 20 }} aria-hidden="true">
-                <ellipse cx="96" cy="108" rx="62" ry="7" fill="rgba(0,0,0,0.25)" />
-                <path d="M150 42 q30 0 30 26 q0 26 -30 26" fill="none" stroke="var(--text-dim)" strokeWidth="9" strokeLinecap="round" />
-                <rect x="42" y="18" width="110" height="88" rx="10" fill="var(--surface-2)" stroke="var(--border)" />
-                <ellipse cx="97" cy="18" rx="55" ry="7" fill="var(--surface)" stroke="var(--border)" />
-                <rect x="72" y="40" width="50" height="40" rx="8" fill={`${STUDIO_COLOR}22`} stroke={STUDIO_COLOR} strokeWidth="2" />
-                <path d="M84 70 l8 -18 l5 10 l5 -10 l8 18 z" fill={STUDIO_COLOR} />
-                <g fill={STUDIO_COLOR} opacity="0.7"><circle cx="196" cy="22" r="3" /><circle cx="206" cy="36" r="2" /><circle cx="22" cy="40" r="2.5" /></g>
-              </svg>
+              {/* real renders from Logo Studio, fading between mug, LED mask and shadow lamp */}
+              <style>{`
+                .ls-stage{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#141216;margin-bottom:12px}
+                .ls-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;animation:lsFade 9s infinite}
+                .ls-stage img:nth-child(1){animation-delay:0s}
+                .ls-stage img:nth-child(2){animation-delay:3s}
+                .ls-stage img:nth-child(3){animation-delay:6s;object-fit:cover}
+                .ls-tags span{opacity:.45;animation:lsTag 9s infinite}
+                .ls-tags span:nth-child(2){animation-delay:3s}
+                .ls-tags span:nth-child(3){animation-delay:6s}
+                @keyframes lsFade{0%{opacity:0}6%{opacity:1}33%{opacity:1}39%{opacity:0}100%{opacity:0}}
+                @keyframes lsTag{0%,39%,100%{opacity:.45}6%,33%{opacity:1;color:${STUDIO_COLOR}}}
+                @media (prefers-reduced-motion: reduce){.ls-stage img{animation:none}.ls-stage img:nth-child(1){opacity:1}.ls-tags span{animation:none;opacity:1}}
+              `}</style>
+              <div className="ls-stage">
+                <img src="/logo-studio/card-1.webp" alt="Mug with a raised client logo" loading="eager" />
+                <img src="/logo-studio/card-2.webp" alt="LED mask with a glowing cut-through logo" loading="lazy" />
+                <img src="/logo-studio/card-3.webp" alt="Shadow lamp casting the logo on a table" loading="lazy" />
+              </div>
+              <div className="ls-tags" style={{ display: 'flex', justifyContent: 'center', gap: 18, marginBottom: 22,
+                fontSize: 10, fontWeight: 800, letterSpacing: '0.1em', color: 'var(--text-muted)' }}>
+                <span>MUGS</span><span>LED MASKS</span><span>LAMPS</span>
+              </div>
 
               <p style={{ fontSize: 26, fontWeight: 900, letterSpacing: '-0.03em', margin: '0 0 8px' }}>Logo Studio</p>
               <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 24px', flex: 1 }}>
